@@ -16,7 +16,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Georama&display=swap" rel="stylesheet">
-
+    <!--Script-->
+<script src="/front-end/index.js"></script>
     <title>Accueil - Orinoco, achetez vos ours en peluche faits main chez nous.</title>
   </head>
   <body>
@@ -44,7 +45,7 @@
                     </ul>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link fw-bold fs-5 text-light" href="#">Contact</a>
+                    <a class="nav-link fw-bold fs-5 text-light" href="#contact">Contact</a>
                   </li>
                 </ul>
                 <div class="list-group list-group-horizontal mt-3 mt-md-0">
@@ -57,15 +58,13 @@
         </nav>
     </header>
 
-    <main>
+    <main class="my-5 px-3">
       <section id="hero">
-        <h1>Les ours en peluches faits main</h1>
+        <h1 class="text-center">Les ours en peluches faits main</h1>
       </section>
       <section>
-        <h2>Nombre d'articles {{articles-group.length}}</h2>
-        <div id="articles-group">
-
-        </div>
+        <h2 id="article-length" class="text-center"></h2>
+        <div id="articles-group" class="d-flex flex-wrap"></div>
       </section>
     </main>
     
@@ -93,7 +92,7 @@
           </li>
         </ul>
       </section>
-      <section class="bg-primary p-2">
+      <section class="bg-primary p-2" id="contact">
         <h2 class="text-center text-light">Contactez-nous</h2>
         <ul class="list-unstyled">
           <li>
