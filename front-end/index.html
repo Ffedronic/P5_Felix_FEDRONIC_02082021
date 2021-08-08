@@ -21,7 +21,7 @@
     <header>
         <nav class="navbar navbar-expand-md navbar-light bg-light">
             <div class="container-fluid">
-              <a class="navbar-brand" href="#">Orinoco</a>
+              <a class="navbar-brand" href="#"><span class="h1">Orinoco</span></a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -43,19 +43,15 @@
                     <a class="nav-link" href="#">Contact</a>
                   </li>
                 </ul>
-                <form class="d-flex mx-lg-5">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
                 <ul class="list-group list-group-horizontal mt-3 mt-md-0">
-                    <li class="list-group-item">
-                        <a href="#"><i class="fas fa-user"></i>Compte</a>
+                    <li>
+                        <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-user"></i>Compte</a>
                     </li>
-                    <li class="list-group-item">
-                        <a href="#"><i class="fas fa-heart"></i>Articles préférés</a>
+                    <li>
+                        <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-heart"></i>Articles préférés</a>
                     </li>
-                    <li class="list-group-item">
-                        <a href="#"><i class="fas fa-shopping-cart"></i>Panier</a>
+                    <li>
+                        <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-shopping-cart"></i>Panier</a>
                     </li>
                 </ul>
               </div>
@@ -67,51 +63,57 @@
       <section id="hero">
         <h1>Les ours en peluches faits main</h1>
       </section>
-      <section id="articles-group">
+      <section>
+        <h2>Nombre d'articles {{articles-group.length}}</h2>
+        <div id="articles-group">
 
+        </div>
       </section>
     </main>
     
-    <footer>
+    <footer class="d-md-flex justify-content-around">
       <section>
         <h2>Service Client</h2>
-        <ul>
+        <ol class="list-group">
           <li>
-            <a href="#">Service Client</a>
+            <a href="#" class="list-group-item list-group-item-action">Service Client</a>
           </li>
           <li>
-            <a href="#">¨Paiement et livraison</a>
+            <a href="#" class="list-group-item list-group-item-action">Paiement et livraison</a>
           </li>
           <li>
-            <a href="#">Conditions générales de ventes</a>
+            <a href="#" class="list-group-item list-group-item-action">Conditions générales de ventes</a>
           </li>
           <li>
-            <a href="#">Mon compte</a>
+            <a href="#" class="list-group-item list-group-item-action">Mon compte</a>
           </li>
-        </ul>
+        </ol>
       </section>
       <section>
         <h2>Contactez-nous</h2>
-        <ul>
+        <ul class="list-group">
           <li>
-            <address>16 rue du Tourmalet<br>31240 L'Union</address>
+            <address class="list-group-item list-group-item-action">
+              <i class="fas fa-map-marker-alt"></i>
+              <p>16 rue du Tourmalet, 31240 L'Union</p>
+            </address>
           </li>
           <li>
-            <a href="tel:+33668584741">Tel. : 06.68.58.47.41</a>
+            <a href="tel:+33668584741" class="list-group-item list-group-item-action"><i class="fas fa-mobile-alt"></i>Tel. : 06.68.58.47.41</a>
           </li>
           <li>
-            <a href="mailto:servicesconso@orinoco.fr">servicesconso@orinoco.fr</a>
+            <a href="mailto:servicesconso@orinoco.fr" class="list-group-item list-group-item-action">servicesconso@orinoco.fr</a>
           </li>
         </ul>
       </section>
       <section>
         <h2>Suivez-nous</h2>
-        <ul>
+        <ul class="list-group">
           <li>
-            <a href="#">Facebook</a>
+            <a href="#" class="list-group-item list-group-item-action"><i class="fab fa-facebook-square"></i>Facebook</a>
           </li>
           <li>
-            <a href="#">Instagram</a>
+            <a href="#" class="list-group-item list-group-item-action"><i class="fab fa-instagram-square"></i>Instagram</a>
           </li>
         </ul>
       </section>
