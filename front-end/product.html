@@ -31,7 +31,7 @@
               <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
                 <ul class="navbar-nav">
                   <li class="nav-item">
-                    <a class="nav-link active fw-bold fs-5 text-light" aria-current="page" href="#">Accueil</a>
+                    <a class="nav-link active fw-bold fs-5 text-light" aria-current="page" href="../front-end/index.html">Accueil</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link fw-bold fs-5 text-light" href="#contact">Contact</a>
@@ -52,8 +52,19 @@
         <h1 class="text-center">Les ours en peluches faits main</h1>
       </section>  
       <section>
-        <h2 id="article-length" class="text-center"></h2>
-        <div id="articles-group" class="d-flex flex-wrap justify-content-evenly">
+        <div id="card" class="">
+            <img src="../images/teddy_1.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h2 class="card-title">Norbert</h2>
+                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <select name="color" id="color">
+                    <option value="tan">Tan</option>
+                    <option value="chocolate">Chocolate</option>
+                    <option value="black">Black</option>
+                    <option value="white">White</option>
+                </select>
+                <a href="#" class="btn btn-primary">Ajouter au Panier</a>
+            </div>
         </div>
       </section>
     </main>
@@ -114,7 +125,7 @@
               <p>Facebook</p>
             </a>
           </li>
-          <li>
+          <li>  
             <a href="#" class="list-group-item list-group-item-action d-flex align-items-baseline">
               <i class="fab fa-instagram-square me-2"></i>
               <p>Instagram</p>
@@ -126,7 +137,9 @@
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+
     <!--Script-->
-    <script src="/front-end/index.js"></script>
+    <script src="../front-end/product.js"></script>
+    
   </body>
 </html>
