@@ -12,7 +12,7 @@ fetch("http://localhost:3000/api/teddies/")
                                                                     <div class="card-body">
                                                                         <h3 class="card-title">${article.name}</h3>
                                                                         <p class="card-text">${article.description}</p>
-                                                                        <a href="../front-end/product.html?id=${article._id}" class="btn btn-primary" id="detail">Acheter</a>
+                                                                        <a href="/front-end/view/product/product.html?id=${article._id}" class="btn btn-primary" id="detail">Acheter</a>
                                                                     </div>
                                                                   </article>`
     };
