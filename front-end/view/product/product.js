@@ -24,14 +24,14 @@ fetch(`http://localhost:3000/api/teddies/${id}`)
   
   //création de la fiche produit à partir des données du produit présents dans l'élément de promesse productElements
   let productCard = document.getElementById('product_card') ;
-  productCard.innerHTML += `<article class="card" id="${productElements._id}">
+  productCard.innerHTML += `<article class="card mb-5" id="${productElements._id}">
                                 <img src="${productElements.imageUrl}" class="card-img-top" alt="peluche fait main ${productElements.name}">
                                 <div class="card-body">
                                   <h2 class="card-title">${productElements.name}</h2>
                                   <p class="card-text">${productElements.description}</p>
                                   <p class="card_text">Prix : <span class="fw-bold">${productElements.price/100}€</span></p>
                                   <form>
-                                    <label for="color" class="form-label">Choisissez votre couleur :</label>
+                                    <label for="colorSelect" class="form-label">Choisissez votre couleur :</label>
                                     <select name="color" id="colorSelect" class="form-select mb-4" arial-labelby="color"></select>
                                   <form>
                                   <button type="button" id="btnSubmit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Mettre dans le Panier</button>
@@ -41,16 +41,16 @@ fetch(`http://localhost:3000/api/teddies/${id}`)
                                 <div class="modal-dialog">
                                   <div class="modal-content">
                                     <div class="modal-header">
-                                      <h5 class="modal-title" id="exampleModalLabel">${productElements.name} a bien été rajouté au panier.</h5>
+                                      <h3 class="modal-title" id="exampleModalLabel">${productElements.name} a bien été rajouté au panier.</h5>
                                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                     <img src="${productElements.imageUrl}" class="card-img-top" alt="peluche fait main ${productElements.name}">
-                                    <h2 class="card-title">${productElements.name}</h2>
+                                    <h3 class="card-title">${productElements.name}</h2>
                                     <p class="card_text">Prix : <span class="fw-bold">${productElements.price/100}€</span></p>
                                     </div>
                                     <div class="modal-footer">
-                                      <a href="#" class="btn btn-secondary" data-bs-dismiss="modal">Mon Panier</a>
+                                      <a href="/front-end/view/cart/cart.html" class="btn btn-secondary">Mon Panier</a>
                                       <a href="/front-end/view/home/index.html" class="btn btn-primary">Liste des produits</a>
                                     </div>
                                   </div>
@@ -72,6 +72,7 @@ fetch(`http://localhost:3000/api/teddies/${id}`)
     event.preventDefault ;
     let productReadyToBuy = {
       id : productElements._id,
+      image : productElements.imageUrl,
       name : productElements.name,
       price : productElements.price
     } ;
