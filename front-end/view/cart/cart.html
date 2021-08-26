@@ -55,17 +55,40 @@
 
   <main class="container my-5">
     <section id="hero" class="my-5">
-      <h1 class="text-center">Votre Panier</h1>
+      <h1 class="text-center mb-5">Votre Panier</h1>
       <h2 id="cardProductsLength" class="text-center">
     </section>
-    <div class="d-flex justify-content-between flex-wrap">
+    <div class="">
       <section id="DisplayArticlesInCart">
-        
       </section>
       <section>
-        <h2>Montant total de la commande : <span id="totalAmount" class="h1 fw-bold"></span></h2>
-        
-        <button type="button" class="btn btn-success"><span class="h4 fw-bold">Valider la commande</span></button>
+        <h2 class="mb-5">Montant total de la commande : <span id="totalAmount" class="h1 fw-bold"></span></h2>
+        <section class="border rounded bg-light p-2">
+          <h2 class="mb-3 text-center">Formulaire de commande</h2>
+        <form>
+          <div class="form-group mb-3 text-center">
+            <label class="h3" for="email">Email :</label>
+            <input type="email" class="form-control" id="email">
+          </div>
+          <div class="form-group mb-3 text-center">
+            <label for="firstName" class="h3">Prénom :</label>
+            <input type="text" class="form-control" id="firstName" aria-label="Entrez votre prénom" required>
+          </div>
+          <div class="form-group mb-3 text-center">
+            <label for="lastName" class="h3">Nom :</label>
+            <input type="text" class="form-control" id="lastName" required>
+          </div>
+          <div class="form-group mb-3 text-center text-center">
+            <label class="h3" for="adress">Adresse :</label>
+            <input type="text" class="form-control" id="adress">
+          </div>
+          <div class="form-group mb-3 text-center">
+            <label class="h3" for="city">Ville</label>
+            <input type="text" class="form-control" id="city">
+          </div>
+          <button type="submit" class="btn btn-success mt-3"><span class="h4 fw-bold">Valider la commande</span></button>
+        </form>
+        </section>
       </section>
     </div>
     
