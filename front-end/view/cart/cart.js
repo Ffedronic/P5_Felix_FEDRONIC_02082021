@@ -66,20 +66,25 @@ else{
 
 //diminution des quantités du produit
 let btnDelete = document.querySelectorAll(".btn-warning") ;
-//écoute
+//au click
 btnDelete.forEach(btnDeleteQelement => {
   btnDeleteQelement.addEventListener('click', event => {
     event.preventDefault ;
     event.stopPropagation ;
+    //je sélectionne l'id du bouton de diminution de la quantité du produit
     let btnDeleteQuantityProductId = btnDeleteQelement.getAttribute('id') ;
     console.log("je diminue la quantité du produit" +" "+ btnDeleteQuantityProductId ) ;
     if(listOfProductStorage!==null) {
       listOfProductStorage.forEach( element => {
+        //si l'id du bouton correspond au produit dans le localStoraga
         if(element.id == btnDeleteQelement.id) {
+          //alors je diminue la quantité du produit dans le localStorage
           element.quantity = element.quantity - 1 ;
           localStorage.setItem("produit", JSON.stringify(listOfProductStorage)) ;
           console.log(listOfProductStorage) ;
+          //je recharge la page pour afficher les nouvelles valeurs du produit
           window.location.reload() ;
+          //si la quantité du produit est égale ou inférieure à 0 alors je supprime le produit du localStorage
           if(element.quantity <= 0) {
             listOfProductStorage = listOfProductStorage.filter(element => element.id !== btnDeleteQelement.id) ;
             localStorage.setItem("produit", JSON.stringify(listOfProductStorage)) ;
@@ -98,19 +103,22 @@ btnAdd.forEach(btnAddElement => {
   btnAddElement.addEventListener('click', event => {
     event.preventDefault ;
     event.stopPropagation ;
+    //je sélectionne l'id du bouton de diminution de la quantité du produit
     let btnAddQuantityProductId = btnAddElement.getAttribute('id') ;
     console.log("j'augmente la quantité du produit" + " " + btnAddQuantityProductId) ;
     if(listOfProductStorage!==null) {
       listOfProductStorage.forEach( element => {
         var found = false ;
+        //si l'id du bouton correspond au produit dans le localStorage
         if(element.id == btnAddElement.id) {
+          //alors j'augmente la quantité du produit dans le localStorage
           element.quantity = element.quantity + 1 ;
           found = true ;
           localStorage.setItem("produit", JSON.stringify(listOfProductStorage)) ;
           console.log(listOfProductStorage) ;
           window.location.reload() ;
-        }
-      })
+        };
+      });
     } ;
   }) ;
 }) ;
@@ -118,9 +126,30 @@ btnAdd.forEach(btnAddElement => {
 //suppression des produits
 let btnDeleteProduct = document.querySelectorAll(".btn-danger") ;
 btnDeleteProduct.forEach(element => {
+  //au click
   element.addEventListener('click', event => {
     event.preventDefault ;
+    event.stopPropagation ;
+    //je sélectionne l'id du bouton correspondant au produit à supprimer
     let btnDeleteProductId = element.getAttribute('id') ;
     console.log("je supprime le produit" + " " + btnDeleteProductId) ;
-  })
+    if(listOfProductStorage !== null){
+      found=false;
+      listOfProductStorage.forEach(element => {
+        //si le produit se trouve dans le localStorage
+        if(element.id == btnDeleteProductId){
+          found=true;
+          //alors je le supprime du localStorage
+          listOfProductStorage = listOfProductStorage.filter(elementToDelete => elementToDelete.id !== btnDeleteProductId) ;
+          localStorage.setItem("produit", JSON.stringify(listOfProductStorage)) ;
+          window.location.reload() ;
+        };
+      });
+    };
+  });
 }) ;
+
+//---------------récupération des informations à transmettre au serveur---------------------------------//
+
+//au click sur le bouton de validation de la commande
+
