@@ -39,11 +39,11 @@ else{
         <div class="col-md-4">
           <img src="${product.image}" class="img-fluid rounded-start" alt="${product.name} peluche faite main" style="min-height: 150px;">
         </div>
-        <div class="col-md-8">
-          <div class="card-body d-flex justify-content-between align-items-baseline">
+        <div class="col-12 col-md-8">
+          <div class="card-body">
             <h3 class="card-title">${product.name}</h3>
             <div>
-              <h4 class="card-text" id="quantityProduct">Quantité : <span><button type="button" class="btn btn-success" id="${product.id}"><i class="fas fa-plus-square"></i></button></span> ${product.quantity} <span><button type="button" class="btn btn-warning" id="${product.id}"><i class="fas fa-minus-square"></i></button></span></h4>
+              <h5 class="card-text" id="quantityProduct">Quantité : <span><button type="button" class="btn btn-success p-1 me-2" id="${product.id}"><i class="fas fa-plus-square"></i></button></span><span id="productQuantity" class="me-2">${product.quantity}</span><span><button type="button" class="btn btn-warning p-1" id="${product.id}"><i class="fas fa-minus-square 11"></i></button></span></h4>
               <h5 class="card-text">Prix :<span id="subtotalProduct">${(product.price/100)*product.quantity}<span>€</h5>
               <button type="button" class="btn btn-danger" id="${product.id}"><i class="fas fa-trash-alt text-white"></i><span class="p-2 text-white fw-bold">Supprimer</span></button>
             </div>
@@ -80,15 +80,12 @@ btnDelete.forEach(btnDeleteQelement => {
         if(element.id == btnDeleteQelement.id) {
           //alors je diminue la quantité du produit dans le localStorage
           element.quantity = element.quantity - 1 ;
+          document.getElementById("productQuantity").innerHTML = element.quantity ;
           localStorage.setItem("produit", JSON.stringify(listOfProductStorage)) ;
-          console.log(listOfProductStorage) ;
-          //je recharge la page pour afficher les nouvelles valeurs du produit
-          window.location.reload() ;
           //si la quantité du produit est égale ou inférieure à 0 alors je supprime le produit du localStorage
           if(element.quantity <= 0) {
             listOfProductStorage = listOfProductStorage.filter(element => element.id !== btnDeleteQelement.id) ;
             localStorage.setItem("produit", JSON.stringify(listOfProductStorage)) ;
-            console.log(listOfProductStorage) ;
             window.location.reload() ;
           } ;
         };
@@ -115,7 +112,6 @@ btnAdd.forEach(btnAddElement => {
           element.quantity = element.quantity + 1 ;
           found = true ;
           localStorage.setItem("produit", JSON.stringify(listOfProductStorage)) ;
-          console.log(listOfProductStorage) ;
           window.location.reload() ;
         };
       });
@@ -149,7 +145,28 @@ btnDeleteProduct.forEach(element => {
   });
 }) ;
 
+
 //---------------récupération des informations à transmettre au serveur---------------------------------//
 
-//au click sur le bouton de validation de la commande
+//récupération du bouton de validation de commande
+let btnSubmit = document.getElementById("btnSubmit") ;
+//au clic sur le bouton de validation de commande
+btnSubmit.addEventListener('click', event => {
+  event.preventDefault ;
+  event.stopPropagation ;
+  //création de l'objet contact contenant les valeurs des contrôles du formulaire
+  const contact = {
+    firstName : document.getElementById("firstName").value,
+    lastName : document.getElementById("lastName").value,
+    address : document.getElementById("adress").value,
+    city : document.getElementById("city").value,
+    email : document.getElementById("email").value
+  }
+  //création du tableau products contenant les id des produits contenus dans le localStorage
+ const products = [] ;
+ listOfProductStorage.forEach(element => {
+   products.push(element.id) ;
+ }) ;
+
+}) ;
 
