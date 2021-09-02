@@ -12,6 +12,8 @@
     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
   <!--Personal CSS-->
   <link rel="stylesheet" href="/front-end/css/style.css">
+  <!--favicon-->
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
   <!--Police-->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -72,19 +74,19 @@
           </div>
           <div class="form-group mb-3 text-center">
             <label for="firstName" class="h3">Prénom :</label>
-            <input type="text" pattern="[A-Za-z0-9]" class="form-control" id="firstName" aria-label="Entrez votre prénom" required>
+            <input type="text" pattern="[A-Za-z]{3,20}" class="form-control" id="firstName" aria-label="Entrez votre prénom" required>
           </div>
           <div class="form-group mb-3 text-center">
             <label for="lastName" class="h3">Nom :</label>
-            <input type="text" pattern="[A-Za-z0-9]{50}" class="form-control" id="lastName" required>
+            <input type="text" pattern="[A-Za-z]{3,20}" class="form-control" id="lastName" required>
           </div>
           <div class="form-group mb-3 text-center text-center">
             <label class="h3" for="adress">Adresse :</label>
-            <input type="text" pattern="[A-Za-z0-9]{50}" class="form-control" id="adress" required>
+            <input type="text" pattern="/^[\w\d\s]{3,80}$/" class="form-control" id="adress" required>
           </div>
           <div class="form-group mb-3 text-center">
             <label class="h3" for="city">Ville</label>
-            <input type="text" pattern="[A-Za-z0-9]{50}" class="form-control" id="city" required>
+            <input type="text" pattern="[A-Za-z]{3,20}" class="form-control" id="city" required>
           </div>
           <button type="submit" id="btnSubmit" class="btn btn-info mt-3"><span class="h4 fw-bold">Valider la commande</span></button>
         </form>

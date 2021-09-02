@@ -80,8 +80,8 @@ btnDelete.forEach(btnDeleteQelement => {
         if(element.id == btnDeleteQelement.id) {
           //alors je diminue la quantité du produit dans le localStorage
           element.quantity = element.quantity - 1 ;
-          document.getElementById("productQuantity").innerHTML = element.quantity ;
           localStorage.setItem("produit", JSON.stringify(listOfProductStorage)) ;
+          window.location.reload() ;
           //si la quantité du produit est égale ou inférieure à 0 alors je supprime le produit du localStorage
           if(element.quantity <= 0) {
             listOfProductStorage = listOfProductStorage.filter(element => element.id !== btnDeleteQelement.id) ;
@@ -150,23 +150,83 @@ btnDeleteProduct.forEach(element => {
 
 //récupération du bouton de validation de commande
 let btnSubmit = document.getElementById("btnSubmit") ;
+const contact = {} ;
+const products = [] ;
 //au clic sur le bouton de validation de commande
 btnSubmit.addEventListener('click', event => {
   event.preventDefault ;
   event.stopPropagation ;
-  //création de l'objet contact contenant les valeurs des contrôles du formulaire
-  const contact = {
-    firstName : document.getElementById("firstName").value,
-    lastName : document.getElementById("lastName").value,
-    address : document.getElementById("adress").value,
-    city : document.getElementById("city").value,
-    email : document.getElementById("email").value
+  //récupération des valeurs des controles du formulaire
+  var firstName = document.getElementById("firstName").value ;
+  var lastName = document.getElementById("lastName").value ;
+  var adress = document.getElementById("adress").value ;
+  var city = document.getElementById("city").value ;
+  var email = document.getElementById("email").value ;
+  //création des fonctions de controle des valeurs
+  //l'expression de fonction regex pour tester les variables firstName, lastName et city
+  const regexTestNameAndCity = (element) => {
+    return /^[a-zA-Z]{3,20}$/.test(element) ;
+  } ;
+  //l'expression de fonction pour l'alerte 
+  const alertFunction = (element) => {
+    alert(`${element} : ni chiffre, ni symbole, 3 à 10 caractères autorisés`) ;
+  } ;
+  
+  //fonction de controle de la valeur firstName
+  function firstNameControl() {
+    if(regexTestNameAndCity(firstName)) {
+      return true ;
+     }else {
+        alertFunction("Prénom") ;
+      return false ;
+     } ;
   }
-  //création du tableau products contenant les id des produits contenus dans le localStorage
- const products = [] ;
- listOfProductStorage.forEach(element => {
-   products.push(element.id) ;
- }) ;
+  
+  //fonction de controle de la valeur firstName
+  function lastNameControl() {
+    if(regexTestNameAndCity(lastName)) {
+      return true ;
+     }else {
+        alertFunction("Nom") ;
+      return false ;
+     } ;
+  }
+  
+  //fonction de controle de la valeur firstName
+  function cityControl() {
+    if(regexTestNameAndCity(city)) {
+      return true ;
+     }else {
+        alertFunction("Ville") ;
+      return false ;
+     } ;
+  }
 
+  //fonction de controle de la valeur email
+  function emailControl() {
+    if(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+      return true ;
+     }else {
+        alert("Email non valide...") ;
+      return false ;
+     } ;
+  }
+
+  //fonction de controle de la valeur adress
+  function adressControl() {
+    if(/^[\w\d\s]{3,80}$/.test(adress)) {
+      return true ;
+     }else {
+        alert("Adresse non valide...") ;
+      return false ;
+     } ;
+  }
+
+  if(firstNameControl() && lastNameControl() && cityControl() && emailControl() && adressControl()) {
+    console.log("ok");
+    window.location.assign("https://www.google.fr")
+  }else{
+    console.log("ko");
+  }
 }) ;
 
