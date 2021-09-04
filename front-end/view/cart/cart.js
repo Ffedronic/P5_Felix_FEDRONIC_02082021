@@ -12,6 +12,9 @@ let lengthOfProductsInCart = document.getElementById('cardProductsLength');
 //selection de l'emplacement du total de la commande
 let totalAmountInCart = document.getElementById('totalAmount');
 
+//sélection de l'emplacement du formulaire
+let displayFormOrder = document.getElementById("formOrder") ;
+
 //création du tableau contenant les produits prêts à afficher
 let displayProducts = [] ;
 
@@ -60,6 +63,32 @@ else{
   lengthOfProductsInCart.innerHTML = `Le panier contient ${productsQuantities} articles.` ;
   //affichage des produits sur la page panier
   displayProductsInCart.innerHTML = displayProducts ;
+  //affichage du formulaire de contact
+  displayFormOrder.innerHTML = `
+  <form class="border rounded bg-light p-2">
+    <h2 class="mb-3 text-center">Formulaire de commande</h2>
+    <div class="form-group mb-3 text-center">
+      <label class="h3" for="email">Email :</label>
+      <input type="email" class="form-control" id="email" required>
+    </div>
+    <div class="form-group mb-3 text-center">
+      <label for="firstName" class="h3">Prénom :</label>
+      <input type="text" pattern="[A-Za-z]{3,20}" class="form-control" id="firstName" aria-label="Entrez votre prénom" required>
+    </div>
+    <div class="form-group mb-3 text-center">
+      <label for="lastName" class="h3">Nom :</label>
+      <input type="text" pattern="[A-Za-z]{3,20}" class="form-control" id="lastName" required>
+    </div>
+    <div class="form-group mb-3 text-center text-center">
+      <label class="h3" for="adress">Adresse :</label>
+      <input type="text" pattern="/^[\w\d\s]{3,80}$/" class="form-control" id="adress" required>
+    </div>
+    <div class="form-group mb-3 text-center">
+      <label class="h3" for="city">Ville</label>
+      <input type="text" pattern="[A-Za-z]{3,20}" class="form-control" id="city" required>
+    </div>
+    <button type="submit" id="btnSubmit" class="btn btn-info mt-3"><span class="h4 fw-bold">Valider la commande</span></button>
+  </form>` ;
 } ;
 
 //----------------------------modification de la quantité par article----------------------------------------//
