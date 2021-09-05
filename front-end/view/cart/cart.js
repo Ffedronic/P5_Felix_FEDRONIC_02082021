@@ -296,9 +296,10 @@ btnSubmit.addEventListener('click', event => {
     .catch((err) => {
       console.log(err);
     })
+    setTimeout(()=> {
+      window.location.assign("/front-end/view/order/order.html")
+    }, 3000) ;
 
-
-   
   } else {
     console.log("ko");
     alert("remplissez correctement tous les champs du formulaire.")
