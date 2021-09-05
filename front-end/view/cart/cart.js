@@ -70,7 +70,7 @@ else {
                                     <h2 class="mb-3 text-center">Formulaire de commande</h2>
                                     <div class="form-group mb-3 text-center">
                                       <label class="h3" for="email">Email :</label>
-                                      <input type="email" class="form-control" id="email" required>
+                                      <input type="email" class="form-control" id="email" placeholder="nom@exemple.fr" required>
                                     </div>
                                     <div class="form-group mb-3 text-center">
                                       <label for="firstName" class="h3">Prénom :</label>
@@ -82,7 +82,7 @@ else {
                                     </div>
                                     <div class="form-group mb-3 text-center text-center">
                                       <label class="h3" for="adress">Adresse :</label>
-                                      <input type="text" class="form-control" id="adress" required>
+                                      <input type="text" class="form-control" id="adress" placeholder="ex : 78 chemin des oursons" required>
                                     </div>
                                     <div class="form-group mb-3 text-center">
                                       <label class="h3" for="city">Ville</label>
@@ -196,8 +196,6 @@ btnSubmit.addEventListener('click', event => {
   var city = document.getElementById("city").value;
   var email = document.getElementById("email").value;
 
-  //création des fonctions de controle des valeurs
-
   //l'expression de fonction regex pour tester les variables firstName, lastName et city
   const regexTestNameAndCity = (element) => {
     return /^[ÀÁÂÃÄÅÇÑñÇçÈÉÊËÌÍÎÏÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöøùúûüýÿ\w-]{3,30}$/.test(element);
@@ -258,15 +256,48 @@ btnSubmit.addEventListener('click', event => {
       city: city,
       email: email
     };
+
     //création du tableau products contenant les id des produits contenus dans le localStorage
     const products = [];
     listOfProductStorage.forEach(element => {
       products.push(element.id);
     });
+    
+    //création de l'objet à envoyer au serveur contenant la liste des produits achetés et les valeurs validées des champs formulaire de contact
     const contactProductsToSend = {
       contact,
       products
     };
+    //envoi de l'objet contactProductsToSend au serveur via fetch api avec la méthode POST
+    fetch("http://localhost:3000/api/teddies/order", {
+      method : "POST",
+      headers : {"content-type" : "application/json"},
+      body : JSON.stringify(contactProductsToSend),
+    })
+    .then((res) => {
+      if(res.ok){
+        return res.json() ;
+      }
+    })
+    .then((responseServer) => {
+      console.log(responseServer) ;
+      //création et stockage dans le localStorage de l'objet responseServerContact contenant l'objet contact renvoyé par le serveur
+      const responseServerContact = responseServer.contact ;
+      localStorage.setItem("responseServerContact", JSON.stringify(responseServerContact)) ;
+      //création et stockage dans le localStorage de l'objet responseServerProducts contenant l'objet products renvoyé par le serveur
+      const responseServerProducts = responseServer.products ;
+      localStorage.setItem("responseServerProducts", JSON.stringify(responseServerProducts)) ;
+      //création et stockage dans le localStorage de l'objet responseServerOrderId contenant l'objet orderId renvoyé par le serveur
+      const responseServerOrderId = responseServer.orderId ;
+      localStorage.setItem("responseServerOrderId", JSON.stringify(responseServerOrderId)) ;
+      //stockage dans le localStorage de l'objet productsTotalPrice contenant le montant total de la commande
+      localStorage.setItem("productsTotalPrice", JSON.stringify(productsTotalPrice)) ;
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+
+
    
   } else {
     console.log("ko");
