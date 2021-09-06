@@ -8,7 +8,7 @@ let queryString_url_id = window.location.search ;
 
 //méthode 2 de récupération de l'id : UrlSearchParams.
 //UrlsearchParams est un constructor contenant les paramètres de la chaine de requete.
-//attention ! : ici, on récupère le id mentionné dans l'url au moment de sa création.
+//attention ! : ici, on récupère l'id mentionné dans l'url au moment de sa création.
 let urlSearchParams = new URLSearchParams(queryString_url_id) ;
 let id = urlSearchParams.get("id") ;
 console.log(id) ;

@@ -298,7 +298,7 @@ btnSubmit.addEventListener('click', event => {
     })
     setTimeout(()=> {
       window.location.assign("/front-end/view/order/order.html")
-    }, 3000) ;
+    }, 2000) ;
 
   } else {
     console.log("ko");
