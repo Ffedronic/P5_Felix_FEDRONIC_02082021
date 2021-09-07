@@ -19,7 +19,7 @@ function DisplayDownloadProducts(listDownloadedProducts) {
 };
 
 //fonction de récupération des produits via fetch api
-function downloadProducts(url) {
+function DownloadProducts(url) {
   fetch(url)
     .then(function (res) {
       if (res.ok) {
@@ -36,4 +36,4 @@ function downloadProducts(url) {
 var url = "http://localhost:3000/api/teddies/";
 
 //appel de la fonction pour télécharger et afficher les produits disponibles dans la base de données
-downloadProducts(url);
+DownloadProducts(url);

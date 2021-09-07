@@ -6,4 +6,8 @@ body {
   width: 20em;
 }
 
+#product_card article {
+  width: 75%;
+}
+
 /*# sourceMappingURL=style.css.map */

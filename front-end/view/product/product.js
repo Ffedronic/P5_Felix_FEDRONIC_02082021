@@ -2,6 +2,7 @@
 let queryString_url_id = window.location.search;
 
 //méthode 1 de récupération de l'id : récupérer l'id dans l'url.
+
 //windows.location.search sert à récupérer le paramètre se situant après le ? de la chaine de requete.
 //la méthode slice(1) supprime le ? de la chaine de requete.
 //let articleId = queryString_url_id.slice(1) ;
@@ -10,21 +11,64 @@ let queryString_url_id = window.location.search;
 //UrlsearchParams est un constructor contenant les paramètres de la chaine de requete.
 //attention ! : ici, on récupère l'id mentionné dans l'url au moment de sa création.
 const urlSearchParams = new URLSearchParams(queryString_url_id);
+
 var id = urlSearchParams.get("id");
-console.log(id);
+
 
 //----------------------------------------Affichage de la fiche produit-------------------------------------------------------------//
+
+
+/*variable url contenant l'url de base de l'api*/
 const url = "http://localhost:3000/api/teddies/";
 
-//récupération de l'emplacement des fiches produits 
+/*récupération de l'emplacement des fiches produits */
 const productCard = document.getElementById('product_card');
 
-// fonction d'affichage de la fiche produit
-function DisplayDownloadProductDetails(productElements) {
+/*fonction d'ajout des options de personnalisation*/
+function AddSelectOption (elementColors, select) {
+  for (let color of elementColors) {
+    let options = document.createElement('option');
+    options.text = color;
+    options.value = color;
+    select.appendChild(options);
+  };
+} ;
 
-  //création de la fiche produit à partir des données du produit présents dans l'élément de promesse productElements
+/*fonction d'ajout au localStorage*/
+function AddToLocalStorage (keyArticles, articles) {
+  localStorage.setItem(keyArticles, JSON.stringify(articles));
+  console.log(articles);
+} ;
+
+/*fonction d'ajout des produits dans le panier*/
+function AddProductsToCart (articles, article) {
+  /**s'il y a des produits dans la variable products**/
+  if (articles != null) {
+    var found = false;
+    articles.forEach(element => {
+      if (element.id == article.id) {
+        element.quantity = element.quantity + 1;
+        found = true;
+      }
+    });
+    if(!found) {
+      articles.push(article);
+    }
+    AddToLocalStorage("produit", articles) ;
+    /**s'il n'y a pas de produits dans la variable products**/
+  } else {
+    articles = [];
+    articles.push(article);
+    AddToLocalStorage("produit", articles) ;
+  };
+};
+
+/*fonction d'affichage de la fiche produit*/
+function DisplayDownloadedProduct(productElements) {
+
+  //création de l'élément html de la fiche produit
   productCard.innerHTML += `
-    <article class="card mb-5 w-75" id="${productElements._id}">
+    <article class="card mb-5" id="${productElements._id}">
       <img src="${productElements.imageUrl}" class=" card-img card-img-top img-fluid" alt="peluche fait main ${productElements.name}">
       <div class="card-body text-center">
         <h2 class="card-title mb-3 h1">${productElements.name}</h2>
@@ -61,34 +105,45 @@ function DisplayDownloadProductDetails(productElements) {
 
   //création des options de couleurs présents dans l'array productElements.colors
   let productSelectColor = document.getElementById("colorSelect");
-  for (let color of productElements.colors) {
-    let options = document.createElement('option');
-    options.text = color;
-    options.value = color;
-    productSelectColor.appendChild(options);
-  };
+  AddSelectOption(productElements.colors, productSelectColor) ;
+  
+  
   let btnSubmit = document.getElementById('btnSubmit');
+  
   btnSubmit.addEventListener('click', (event) => {
     event.preventDefault;
-    sendProductToLocalStorage(productElements) ;
+
+    /*création de l'objet à transmettre au panier*/
+    let productReadyToBuy = {
+      id: productElements._id,
+      image: productElements.imageUrl,
+      name: productElements.name,
+      price: productElements.price,
+      quantity: 1
+    };
+  
+    //déclaration de la variable products qui contiendra les clés productReadyToBuy 
+    let products = JSON.parse(localStorage.getItem("produit"));
+    //appel de la fonction d'ajout au panier
+    AddProductsToCart(products, productReadyToBuy) ;
   });
 };
 
 //function de récupération des informations du produit via l'id
-function downloadProductById(url, id) {
+function DownloadProductById(url, id) {
   fetch(`${url}${id}`)
     .then(function (res) {
       if (res.ok) {
         return res.json();
       }
     })
-    .then(DisplayDownloadProductDetails)
+    .then(DisplayDownloadedProduct)
     .catch((err) => {
       console.log(err);
     });
 };
 
-//chargement des données du produit à l'aide de son id
-downloadProductById(url, id);
+//chargement des données du produit et affichage du produit à l'aide de son id
+DownloadProductById(url, id);
 
 //--------------------------------------Fin affichage de la fiche produit----------------------------------------------------------//
