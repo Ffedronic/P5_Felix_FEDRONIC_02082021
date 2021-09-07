@@ -5,7 +5,7 @@ function DisplayDownloadProducts(listDownloadedProducts) {
     document.getElementById('articles-group').innerHTML +=
       `
         <article class="card m-3" id="${article._id}">
-          <img  class="card-img-top img-fluid" src="${article.imageUrl}" alt="${article.name} ours en peluche fait main"> 
+          <img  class=" card-img card-img-top img-fluid" src="${article.imageUrl}" alt="${article.name} ours en peluche fait main"> 
           <div class="card-body text-center">
               <h3 class="card-title">${article.name}</h3>
               <p class="card-text">${article.description}</p>
