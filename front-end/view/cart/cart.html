@@ -22,37 +22,33 @@
 </head>
 
 <body>
+  
   <!-- Nav Bar Heading -->
   <header>
-    <nav class="navbar navbar-expand-md navbar-light bg-primary">
-      <div class="container-fluid">
-        <a class="navbar-brand me-5" href="#"><span class="fs-1 fw-bold text-light">Orinoco</span></a>
+    <nav class="navbar navbar-expand-md navbar-light bg-secondary">
+      <div class="container">
+        <span class="navbar-brand me-5 fs-1 fw-bold text-light">Peluches Orinoco</span>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
           aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
-          <ul class="navbar-nav">
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav nav-tabs">
             <li class="nav-item">
-              <a class="nav-link active fw-bold fs-5 text-light" aria-current="page"
+              <a class="nav-link fw-bold fs-5 text-white" aria-current="page"
                 href="/front-end/view/home/index.html">Accueil</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link fw-bold fs-5 text-light" href="#">Contact</a>
+              <a class="nav-link active fw-bold fs-5 text-black" href="/front-end/view/cart/cart.html">Panier<i
+                  class="fas fa-shopping-cart ms-2"></i></a>
             </li>
           </ul>
-          <div class="list-group list-group-horizontal mt-3 mt-md-0">
-            <a href="#"
-              class="list-group-item list-group-item-action list-group-item-success text-center d-flex flex-column justify-content-around"><i
-                class="fas fa-user"></i>Compte</a>
-            <a href="#"
-              class="list-group-item list-group-item-action list-group-item-success text-center d-flex flex-column justify-content-around"><i
-                class="fas fa-shopping-cart"></i>Panier</a>
-          </div>
         </div>
       </div>
     </nav>
   </header>
+
+  <!--Page Content-->
   <div class="container">
     <main class="my-5">
       <section id="hero" class="my-5">
@@ -70,8 +66,10 @@
 
     </main>
   </div>
+
+  <!--Footer-->
   <footer class="d-md-flex justify-content-around bg-secondary p-2">
-    <section class="bg-primary p-2">
+    <section class="bg-primary rounded-3 p-2 mb-3">
       <h2 class="text-center text-light">Service Client</h2>
       <ul class="list-unstyled">
         <li>
@@ -94,7 +92,7 @@
         </li>
       </ul>
     </section>
-    <section class="bg-primary p-2" id="contact">
+    <section class="bg-primary rounded-3 p-2 mb-3">
       <h2 class="text-center text-light">Contactez-nous</h2>
       <ul class="list-unstyled">
         <li>
@@ -118,31 +116,17 @@
         </li>
       </ul>
     </section>
-    <section class="bg-primary p-2">
-      <h2 class="text-center text-light">Suivez-nous</h2>
-      <ul class="list-unstyled">
-        <li>
-          <a href="#" class="list-group-item list-group-item-action d-flex align-items-baseline">
-            <i class="fab fa-facebook-square me-2"></i>
-            <p>Facebook</p>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="list-group-item list-group-item-action d-flex align-items-baseline">
-            <i class="fab fa-instagram-square me-2"></i>
-            <p>Instagram</p>
-          </a>
-        </li>
-      </ul>
-    </section>
   </footer>
+
   <!-- Option 1: Bootstrap Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous">
   </script>
+
   <!--FontAwesome-->
   <script src="https://kit.fontawesome.com/26697731b2.js" crossorigin="anonymous"></script>
-  <!--Script cart-->
+
+  <!--Script Current Page-->
   <script src="/front-end/view/cart/cart.js"></script>
 </body>
 

@@ -1,13 +1,13 @@
-//----------déclaration de la variable products qui contiendra les clés productReadyToBuy----------// 
-let listOfProductStorage = JSON.parse(localStorage.getItem("produit"));
+//---------------------------------déclaration des variables---------------------------------------// 
 
-//--------------------affichage des produits dans la page panier-----------------------------------//
+/*déclaration de la variable listOfProductStorage contenant les objets json dans la clé produit du localStorage*/
+const listOfProductStorage = JSON.parse(localStorage.getItem("produit"));
 
 //selection de l'emplacement d'affichage des produits
-let displayProductsInCart = document.getElementById("DisplayArticlesInCart");
+const displayProductsInCart = document.getElementById("DisplayArticlesInCart");
 
 //selection de l'emplacement du nombre de produits
-let lengthOfProductsInCart = document.getElementById('cardProductsLength');
+const lengthOfProductsInCart = document.getElementById('cardProductsLength');
 
 //selection de l'emplacement du total de la commande
 const totalAmountInCart = document.getElementById('totalAmount');
@@ -19,10 +19,12 @@ const displayFormOrder = document.getElementById("formOrder");
 let displayProducts = [];
 
 //création de la variable number contenant la quantité totale de produit
-let productsQuantities = 0;
+var productsQuantities = 0;
 
 //création de la variable number contenant le prix total de la commande
-let productsTotalPrice = 0;
+var productsTotalPrice = 0;
+
+//--------------------affichage des produits dans la page panier-----------------------------------//
 
 //si le localStorage ne contient pas de produit
 if (listOfProductStorage == null || listOfProductStorage == 0) {
