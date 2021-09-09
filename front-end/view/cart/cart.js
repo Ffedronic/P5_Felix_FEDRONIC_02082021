@@ -20,6 +20,13 @@ const displayProductsFormOrderInCart = document.getElementById("formOrder");
 
 //--------------------affichage des produits dans la page panier-----------------------------------//
 
+/**
+ * 
+ * * les url d'envoi Post order et le localSotrage, localisation de la page de confirmation 
+ */
+const urlSendOrder = "http://localhost:3000/api/teddies/order";
+const urlConfirmationPage = "/front-end/view/order/order.html";
+
 /*fonction d'affichage du formulaire de contact (paramètre : emplacement de l'affichage du formulaire*/
 function DisplayForm(displayFormLocation) {
 
@@ -51,7 +58,152 @@ function DisplayForm(displayFormLocation) {
         <button type="submit" id="btnSubmit" class="btn btn-info mt-3"><span class="h4 fw-bold">Valider la commande</span></button>
       </form>
     `;
+  //récupération du bouton de validation de commande
+  const btnSubmit = document.getElementById("btnSubmit");
+};
 
+/**
+ * *fonction d'envoi de l'objet contenant les valeurs du formulaire de contact, les id des produits du panier, le montant total de la commande
+ * * (paramètres : liste des produits, objet json avec les valeurs du formulaire et les id produits, le montant total de la commande)
+ * */
+function SendContactProductsId(urlToSend, FormContactProductsId, OrderTotalPrice, urlConfirmationPage) {
+  //envoi de l'objet contactProductsToSend au serveur via fetch api avec la méthode POST
+  fetch(urlToSend, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify(FormContactProductsId),
+    })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+    })
+    .then((responseServer) => {
+      console.log(responseServer);
+      //création et stockage dans le localStorage de l'objet responseServerContact contenant l'objet contact renvoyé par le serveur
+      const responseServerContact = responseServer.contact;
+      localStorage.setItem("responseServerContact", JSON.stringify(responseServerContact));
+      //création et stockage dans le localStorage de l'objet responseServerProducts contenant l'objet products renvoyé par le serveur
+      const responseServerProducts = responseServer.products;
+      localStorage.setItem("responseServerProducts", JSON.stringify(responseServerProducts));
+      //création et stockage dans le localStorage de l'objet responseServerOrderId contenant l'objet orderId renvoyé par le serveur
+      const responseServerOrderId = responseServer.orderId;
+      localStorage.setItem("responseServerOrderId", JSON.stringify(responseServerOrderId));
+      //stockage dans le localStorage de l'objet productsTotalPrice contenant le montant total de la commande
+      localStorage.setItem("productsTotalPrice", JSON.stringify(OrderTotalPrice));
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  setTimeout(() => {
+    window.location.assign(urlConfirmationPage)
+  }, 2000);
+
+};
+
+
+/*fonction de récupération des valeurs du formulaire de contact et les id des produits du panier (paramètre : liste des produits)*/
+function CollectContactProductsId(productsList) {
+  const contact = {};
+  const products = [];
+
+  //au clic sur le bouton de validation de commande
+  btnSubmit.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    //récupération des valeurs des controles du formulaire
+    var firstName = document.getElementById("firstName").value;
+    var lastName = document.getElementById("lastName").value;
+    var adress = document.getElementById("adress").value;
+    var city = document.getElementById("city").value;
+    var email = document.getElementById("email").value;
+
+    //l'expression de fonction regex pour tester les variables firstName, lastName et city
+    const regexTestNameAndCity = (element) => {
+      return /^[ÀÁÂÃÄÅÇÑñÇçÈÉÊËÌÍÎÏÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöøùúûüýÿ\w-]{3,30}$/.test(element);
+    };
+
+    //fonction de controle de la valeur firstName
+    function firstNameControl() {
+      if (regexTestNameAndCity(firstName)) {
+        return true;
+      } else {
+        return false;
+      };
+    }
+
+    //fonction de controle de la valeur firstName
+    function lastNameControl() {
+      if (regexTestNameAndCity(lastName)) {
+        return true;
+      } else {
+        return false;
+      };
+    }
+
+    //fonction de controle de la valeur firstName
+    function cityControl() {
+      if (regexTestNameAndCity(city)) {
+        return true;
+      } else {
+        return false;
+      };
+    }
+
+    //fonction de controle de la valeur email
+    function emailControl() {
+      if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+        return true;
+      } else {
+        return false;
+      };
+    }
+
+    //fonction de controle de la valeur adress
+    function adressControl() {
+      if (/^[\w\d\s]{3,80}$/.test(adress)) {
+        return true;
+      } else {
+        return false;
+      };
+    }
+
+    if (firstNameControl() && lastNameControl() && cityControl() && emailControl() && adressControl()) {
+      console.log("ok");
+      //création de l'objet contact contenant les valeurs des contrôles du formulaire
+      const contact = {
+        firstName: firstName,
+        lastName: lastName,
+        address: adress,
+        city: city,
+        email: email
+      };
+
+      //création du tableau products contenant les id des produits contenus dans le localStorage
+      const products = [];
+      productsList.forEach(element => {
+        products.push(element.id);
+      });
+
+      //création de l'objet à envoyer au serveur contenant la liste des produits achetés et les valeurs validées des champs formulaire de contact
+      const contactProductsToSend = {
+        contact,
+        products
+      };
+
+      /**
+       * ! Appel de la fonction d'affichage d'envoi du formulaire, le total commande, vers le serveur et la réponse du serveur vers la page de confirmation 
+       * ! (paramètres : url d'envoi post, objet json avec les valeurs du formulaire et les id produits, le montant total de la commande, page de confirmation)
+       */
+      SendContactProductsId(urlSendOrder, contactProductsToSend, productsTotalPrice, urlConfirmationPage);
+    } else {
+      console.log("ko");
+      alert("remplissez correctement tous les champs du formulaire.")
+    }
+  });
 };
 
 /* fonction d'affichage des produits présents dans le localStorage (paramètres : liste des produits, emplacemement d'affichage de la liste, emplacemement d'affichage de la quantité, emplacemement d'affichage du montant total de la commande)*/
@@ -108,6 +260,12 @@ function DisplayProductsLocalStorage(productsList, productsListDisplayLocation, 
      * ! Appel de la fonction DisplayFOrm
      */
     DisplayForm(displayProductsFormOrderInCart);
+
+    /**
+     * ! Appel de la fonction CollectContactProductsId
+     */
+    CollectContactProductsId(listOfProductStorage);
+
   };
 };
 
@@ -186,14 +344,14 @@ function IncreaseProductQuantity(productsButtonIncreaseQuantity, productsList) {
 };
 
 /**
- * *Récupération de la liste des boutons "+" la quantité du produit
+ * *Récupération de la liste des boutons "supprimer" du produit
  */
 const btnDeleteProduct = document.querySelectorAll(".btn-danger");
 
 /**
  * *fonction de suppression du produit (paramètres : liste des boutons "supprimer"  des produits, liste des produits du panier)
  */
-function DeleteProduct (productsButtonDelete, productsList) {
+function DeleteProduct(productsButtonDelete, productsList) {
   productsButtonDelete.forEach(btnDeleteElement => {
     //au click
     btnDeleteElement.addEventListener('click', event => {
@@ -212,8 +370,7 @@ function DeleteProduct (productsButtonDelete, productsList) {
       };
     });
   });
-} ;
-
+};
 
 /**
  * ! Appel de la fonction DecreaseProductQuantity (paramètres : liste des boutons "-" la quantité des produits, liste des produits du localStorage)
@@ -228,136 +385,4 @@ IncreaseProductQuantity(btnIncreaseProductQuantity, listOfProductStorage);
 /**
  * ! Appel de la fonction de suppression du produit (paramètres : liste des boutons "supprimer"  des produits, liste des produits du localStorage)
  */
- DeleteProduct (btnDeleteProduct, listOfProductStorage) ;
-
-
-//---------------récupération des informations à transmettre au serveur---------------------------------//
-
-//récupération du bouton de validation de commande
-const btnSubmit = document.getElementById("btnSubmit");
-const contact = {};
-const products = [];
-
-//au clic sur le bouton de validation de commande
-btnSubmit.addEventListener('click', event => {
-  event.preventDefault();
-  event.stopPropagation();
-
-  //récupération des valeurs des controles du formulaire
-  var firstName = document.getElementById("firstName").value;
-  var lastName = document.getElementById("lastName").value;
-  var adress = document.getElementById("adress").value;
-  var city = document.getElementById("city").value;
-  var email = document.getElementById("email").value;
-
-  //l'expression de fonction regex pour tester les variables firstName, lastName et city
-  const regexTestNameAndCity = (element) => {
-    return /^[ÀÁÂÃÄÅÇÑñÇçÈÉÊËÌÍÎÏÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöøùúûüýÿ\w-]{3,30}$/.test(element);
-  };
-
-  //fonction de controle de la valeur firstName
-  function firstNameControl() {
-    if (regexTestNameAndCity(firstName)) {
-      return true;
-    } else {
-      return false;
-    };
-  }
-
-  //fonction de controle de la valeur firstName
-  function lastNameControl() {
-    if (regexTestNameAndCity(lastName)) {
-      return true;
-    } else {
-      return false;
-    };
-  }
-
-  //fonction de controle de la valeur firstName
-  function cityControl() {
-    if (regexTestNameAndCity(city)) {
-      return true;
-    } else {
-      return false;
-    };
-  }
-
-  //fonction de controle de la valeur email
-  function emailControl() {
-    if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-      return true;
-    } else {
-      return false;
-    };
-  }
-
-  //fonction de controle de la valeur adress
-  function adressControl() {
-    if (/^[\w\d\s]{3,80}$/.test(adress)) {
-      return true;
-    } else {
-      return false;
-    };
-  }
-
-  if (firstNameControl() && lastNameControl() && cityControl() && emailControl() && adressControl()) {
-    console.log("ok");
-    //création de l'objet contact contenant les valeurs des contrôles du formulaire
-    const contact = {
-      firstName: firstName,
-      lastName: lastName,
-      address: adress,
-      city: city,
-      email: email
-    };
-
-    //création du tableau products contenant les id des produits contenus dans le localStorage
-    const products = [];
-    listOfProductStorage.forEach(element => {
-      products.push(element.id);
-    });
-
-    //création de l'objet à envoyer au serveur contenant la liste des produits achetés et les valeurs validées des champs formulaire de contact
-    const contactProductsToSend = {
-      contact,
-      products
-    };
-    //envoi de l'objet contactProductsToSend au serveur via fetch api avec la méthode POST
-    fetch("http://localhost:3000/api/teddies/order", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json"
-        },
-        body: JSON.stringify(contactProductsToSend),
-      })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .then((responseServer) => {
-        console.log(responseServer);
-        //création et stockage dans le localStorage de l'objet responseServerContact contenant l'objet contact renvoyé par le serveur
-        const responseServerContact = responseServer.contact;
-        localStorage.setItem("responseServerContact", JSON.stringify(responseServerContact));
-        //création et stockage dans le localStorage de l'objet responseServerProducts contenant l'objet products renvoyé par le serveur
-        const responseServerProducts = responseServer.products;
-        localStorage.setItem("responseServerProducts", JSON.stringify(responseServerProducts));
-        //création et stockage dans le localStorage de l'objet responseServerOrderId contenant l'objet orderId renvoyé par le serveur
-        const responseServerOrderId = responseServer.orderId;
-        localStorage.setItem("responseServerOrderId", JSON.stringify(responseServerOrderId));
-        //stockage dans le localStorage de l'objet productsTotalPrice contenant le montant total de la commande
-        localStorage.setItem("productsTotalPrice", JSON.stringify(productsTotalPrice));
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-    setTimeout(() => {
-      window.location.assign("/front-end/view/order/order.html")
-    }, 2000);
-
-  } else {
-    console.log("ko");
-    alert("remplissez correctement tous les champs du formulaire.")
-  }
-});
+DeleteProduct(btnDeleteProduct, listOfProductStorage);
