@@ -1,13 +1,27 @@
 body {
   font-family: "Playfair Display", serif;
 }
+body .container {
+  max-width: 1200px;
+}
 
 #articles-group article {
-  width: 20em;
+  width: 18em;
+  margin-right: 5px;
+}
+@media all and (min-width: 1025px) {
+  #articles-group article {
+    width: 22em;
+  }
 }
 
 #product_card article {
   width: 75%;
+}
+@media all and (min-width: 1025px) {
+  #product_card article {
+    width: 50%;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */

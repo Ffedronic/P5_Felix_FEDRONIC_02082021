@@ -210,7 +210,7 @@ function CollectContactProductsId(productsList) {
 function DisplayProductsLocalStorage(productsList, productsListDisplayLocation, productsListDisplayLength, productsListDisplayTotalAmount) {
   //si le localStorage ne contient pas de produit
   if (productsList == null || productsList == 0) {
-    productsListDisplayLength.innerHTML = "Le panier est vide";
+    productsListDisplayLength.innerHTML = `<h2>Le panier est vide.</h2>`;
   }
   //si le localStorage contient des produits
   else {
@@ -228,20 +228,36 @@ function DisplayProductsLocalStorage(productsList, productsListDisplayLocation, 
       productsQuantities += product.quantity;
       //création des éléments à afficher pour chaque produit
       displayProducts += `
-      <article class="card mb-3" id="${product.id}" style="max-width: 600px;">
+      <article class="card mb-3" id="${product.id}">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-sm-4">
             <img src="${product.image}" class="img-fluid rounded-start" alt="${product.name} peluche faite main" style="min-height: 150px;">
           </div>
-          <div class="col-12 col-md-8">
+          <div class="col-12 col-sm-8">
             <div class="card-body">
               <h3 class="card-title">${product.name}</h3>
               <div class="d-flex justify-content-between">
                 <div>
-                  <h5 class="card-text" id="quantityProduct">Quantité : <span><button type="button" class="btn btn-success p-1 me-2" id="${product.id}"><i class="fas fa-plus-square"></i></button></span><span id="productQuantity" class="me-2">${product.quantity}</span><span><button type="button" class="btn btn-warning p-1" id="${product.id}"><i class="fas fa-minus-square 11"></i></button></span></h4>
+                  <h5 class="card-text" id="quantityProduct">Quantité :</h5>
+                  <h5>
+                    <span>
+                      <button type="button" class="btn btn-success p-1 me-2" id="${product.id}">
+                        <i class="fas fa-plus-square"></i>
+                      </button>
+                    </span>
+                    <span id="productQuantity" class="me-2">${product.quantity}</span>
+                    <span>
+                      <button type="button" class="btn btn-warning p-1" id="${product.id}">
+                        <i class="fas fa-minus-square 11"></i>
+                      </button>
+                    </span>
+                  </h5>
                   <h5 class="card-text">Prix :<span id="subtotalProduct">${(product.price/100)*product.quantity}<span>€</h5>
                 </div>
-                <button type="button" class="btn btn-danger" id="${product.id}"><i class="fas fa-trash-alt text-white"></i><span class="p-2 text-white fw-bold">Supprimer</span></button>
+                <button type="button" class="btn btn-danger fw-bold" id="${product.id}">
+                  <i class="fas fa-trash-alt text-white"></i>
+                  Supprimer
+                </button>
               </div>
             </div>
           </div>
@@ -250,7 +266,7 @@ function DisplayProductsLocalStorage(productsList, productsListDisplayLocation, 
       `;
     }
     //affichage de la quantité totale de produits dans le localStorage
-    productsListDisplayLength.innerHTML = `Le panier contient ${productsQuantities} ours.`;
+    productsListDisplayLength.innerHTML = `<h2>Le panier contient ${productsQuantities} ours.</h2>`;
     //affichage des produits sur la page panier
     productsListDisplayLocation.innerHTML = displayProducts;
     //affichage du montant total de la commande

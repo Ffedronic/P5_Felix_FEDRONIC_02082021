@@ -1,5 +1,9 @@
 #articles-group {
     article {
-        width: 20em;
+        width: 18em;
+        margin-right: 5px;
+        @include desktop-only {
+            width: 22em;
+        }
     }
 }

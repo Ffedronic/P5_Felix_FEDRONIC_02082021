@@ -66,6 +66,12 @@ function AddProductsToCart (articles, article) {
 /*fonction d'affichage de la fiche produit*/
 function DisplayDownloadedProduct(productElements) {
 
+  /**
+     * *affichage du nom dans la barre de navigation
+     */
+   let productName = document.getElementById("productName") ;
+   productName.innerHTML = `"${productElements.name}"` ;
+
   //création de l'élément html de la fiche produit
   productCard.innerHTML += `
     <article class="card mb-5" id="${productElements._id}">
