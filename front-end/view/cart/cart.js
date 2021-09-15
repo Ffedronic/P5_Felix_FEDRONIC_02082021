@@ -6,6 +6,9 @@ var listOfProductStorage = JSON.parse(localStorage.getItem("produit"));
 /*création de la variable number contenant le prix total de la commande*/
 var productsTotalPrice = 0;
 
+/*création de la variable number contenant la quantité totale de produit*/
+var productsQuantities = 0;
+
 /*selection de l'emplacement d'affichage des produits*/
 const displayProductsInCart = document.getElementById("DisplayArticlesInCart");
 
@@ -81,7 +84,6 @@ function SendContactProductsId(urlToSend, FormContactProductsId, OrderTotalPrice
       }
     })
     .then((responseServer) => {
-      console.log(responseServer);
       //création et stockage dans le localStorage de l'objet responseServerContact contenant l'objet contact renvoyé par le serveur
       const responseServerContact = responseServer.contact;
       localStorage.setItem("responseServerContact", JSON.stringify(responseServerContact));
@@ -218,17 +220,12 @@ function DisplayProductsLocalStorage(productsList, productsListDisplayLocation, 
     /*création du tableau contenant les corps html des produits à afficher*/
     let displayProducts = [];
 
-    /*création de la variable number contenant la quantité totale de produit*/
-    var productsQuantities = 0;
-
     for (let product of productsList) {
-      //calcul du prix total de la commande
-      productsTotalPrice += (product.quantity * product.price) / 100;
-      //calcul de la quantité totale des produits présents dans le localStorage
+      //quantité de produit
       productsQuantities += product.quantity;
       //création des éléments à afficher pour chaque produit
       displayProducts += `
-      <article class="card mb-3" id="${product.id}">
+      <article class="card mb-3" id="articleProduct${product.id}">
         <div class="row">
           <div class="col-sm-4">
             <img src="${product.image}" class="img-fluid rounded-start" alt="${product.name} peluche faite main" style="min-height: 150px;">
@@ -241,21 +238,21 @@ function DisplayProductsLocalStorage(productsList, productsListDisplayLocation, 
                   <h5 class="card-text" id="quantityProduct">Quantité :</h5>
                   <h5>
                     <span>
-                      <button type="button" class="btn btn-success p-1 me-2" id="${product.id}">
-                        <i class="fas fa-plus-square"></i>
+                      <button type="button" class="btn btn-success p-1 me-2" id="${product.id}" data-productid="${product.id}" data-quantity="1">
+                        <i class="fas fa-plus-square" data-productid="${product.id}" data-quantity="1"></i>
                       </button>
                     </span>
-                    <span id="productQuantity" class="me-2">${product.quantity}</span>
+                    <span id="productQuantity${product.id}" class="me-2">${product.quantity}</span>
                     <span>
-                      <button type="button" class="btn btn-warning p-1" id="${product.id}">
-                        <i class="fas fa-minus-square 11"></i>
+                      <button type="button" class="btn btn-warning p-1" id="decreaseProduct${product.id}" data-productid="${product.id}" data-quantity="-1">
+                        <i class="fas fa-minus-square 11" data-productid="${product.id}" data-quantity="-1"></i>
                       </button>
                     </span>
                   </h5>
-                  <h5 class="card-text">Prix :<span id="subtotalProduct">${(product.price/100)*product.quantity}<span>€</h5>
+                  <h5 class="card-text">Prix :<span id="subtotalProduct${product.id}">${(product.price/100)*product.quantity}<span>€</h5>
                 </div>
-                <button type="button" class="btn btn-danger fw-bold" id="${product.id}">
-                  <i class="fas fa-trash-alt text-white"></i>
+                <button type="button" class="btn btn-danger fw-bold" id="button${product.id}" data-productid="${product.id}" data-quantity="0">
+                  <i class="fas fa-trash-alt text-white" data-productid="${product.id}" data-quantity="0"></i>
                   Supprimer
                 </button>
               </div>
@@ -266,11 +263,11 @@ function DisplayProductsLocalStorage(productsList, productsListDisplayLocation, 
       `;
     }
     //affichage de la quantité totale de produits dans le localStorage
-    productsListDisplayLength.innerHTML = `<h2>Le panier contient ${productsQuantities} ours.</h2>`;
+    productsListDisplayLength.innerHTML = `<h2>Le panier contient <span id="productsElements">${productsQuantities}</span> ours.</h2>`;
     //affichage des produits sur la page panier
     productsListDisplayLocation.innerHTML = displayProducts;
     //affichage du montant total de la commande
-    productsListDisplayTotalAmount.innerHTML = `<h2 class="mb-5">Montant de la commande : <span class="h1 fw-bold">${productsTotalPrice} €</span></h2>`;
+    productsListDisplayTotalAmount.innerHTML = `<h2 class="mb-5">Montant de la commande : <span class="h1 fw-bold" id="productsTotalPrice">${productsTotalPrice} €</span></h2>`;
 
     /**
      * ! Appel de la fonction DisplayFOrm
@@ -296,6 +293,41 @@ DisplayProductsLocalStorage(listOfProductStorage, displayProductsInCart, display
 //----------------------------modification de la quantité par article----------------------------------------//
 
 /**
+ * * Fonction de modification au click
+ */
+function handleButtonClick(event, productsList) {
+  let button = event.target;
+  let quantity = button.dataset.quantity * 1;
+  event.preventDefault;
+  event.stopPropagation;
+  if (productsList !== null) {
+    productsList.forEach(element => {
+      //si l'id du bouton correspond au produit dans le localStoraga
+      if (element.id == event.target.dataset.productid) {
+        //alors je diminue la quantité du produit dans le localStorage
+        if (quantity == 0) {
+          element.quantity = 0;
+        } else {
+          element.quantity = element.quantity + quantity;
+          localStorage.setItem("produit", JSON.stringify(productsList));
+          var productsElements = parseInt(document.getElementById("productsElements").innerHTML) + quantity;
+          document.getElementById("productsElements").innerHTML = productsElements;
+          document.getElementById("productQuantity" + element.id).innerHTML = element.quantity;
+          document.getElementById("subtotalProduct" + element.id).innerHTML = `${(element.price/100)*element.quantity} €`;
+        }
+        //si la quantité du produit est égale ou inférieure à 0 alors je supprime le produit du localStorage
+        if (element.quantity <= 0) {
+          productsList = productsList.filter(element => element.id !== event.target.dataset.productid);
+          localStorage.setItem("produit", JSON.stringify(productsList));
+          var article = document.getElementById("articleProduct" + event.target.dataset.productid);
+          article.parentNode.removeChild(article);
+        };
+      };
+    });
+  }
+};
+
+/**
  * *Récupération de la liste des boutons "-" la quantité du produit
  */
 const btnDecreaseProductQuantity = document.querySelectorAll(".btn-warning");
@@ -306,25 +338,7 @@ const btnDecreaseProductQuantity = document.querySelectorAll(".btn-warning");
 function DecreaseProductQuantity(productsButtonDecreaseQuantity, productsList) {
   productsButtonDecreaseQuantity.forEach(btnDeleteQelement => {
     btnDeleteQelement.addEventListener('click', event => {
-      event.preventDefault;
-      event.stopPropagation;
-      if (productsList !== null) {
-        productsList.forEach(element => {
-          //si l'id du bouton correspond au produit dans le localStoraga
-          if (element.id == btnDeleteQelement.id) {
-            //alors je diminue la quantité du produit dans le localStorage
-            element.quantity = element.quantity - 1;
-            localStorage.setItem("produit", JSON.stringify(productsList));
-            window.location.reload();
-            //si la quantité du produit est égale ou inférieure à 0 alors je supprime le produit du localStorage
-            if (element.quantity <= 0) {
-              productsList = productsList.filter(element => element.id !== btnDeleteQelement.id);
-              localStorage.setItem("produit", JSON.stringify(productsList));
-              window.location.reload();
-            };
-          };
-        });
-      };
+      handleButtonClick(event, productsList)
     });
   });
 };
@@ -338,26 +352,12 @@ const btnIncreaseProductQuantity = document.querySelectorAll(".btn-success");
  * *fonction d'augmentation de la quantité du produit (paramètres : liste des boutons "+" la quantité des produits, liste des produits du panier)
  */
 function IncreaseProductQuantity(productsButtonIncreaseQuantity, productsList) {
-  productsButtonIncreaseQuantity.forEach(btnAddElement => {
-    btnAddElement.addEventListener('click', event => {
-      event.preventDefault;
-      event.stopPropagation;
-      if (productsList !== null) {
-        productsList.forEach(element => {
-          var found = false;
-          //si l'id du bouton correspond au produit dans le localStorage
-          if (element.id == btnAddElement.id) {
-            //alors j'augmente la quantité du produit dans le localStorage
-            element.quantity = element.quantity + 1;
-            found = true;
-            localStorage.setItem("produit", JSON.stringify(productsList));
-            window.location.reload();
-          };
-        });
-      };
+  productsButtonIncreaseQuantity.forEach(btnDeleteQelement => {
+    btnDeleteQelement.addEventListener('click', event => {
+      handleButtonClick(event, productsList)
     });
   });
-};
+}
 
 /**
  * *Récupération de la liste des boutons "supprimer" du produit
@@ -371,19 +371,7 @@ function DeleteProduct(productsButtonDelete, productsList) {
   productsButtonDelete.forEach(btnDeleteElement => {
     //au click
     btnDeleteElement.addEventListener('click', event => {
-      event.preventDefault;
-      event.stopPropagation;
-      if (productsList !== null) {
-        productsList.forEach(element => {
-          //si le produit se trouve dans le localStorage
-          if (element.id == btnDeleteElement.id) {
-            //alors je le supprime du localStorage
-            productsList = productsList.filter(elementToDelete => elementToDelete.id !== btnDeleteElement.id);
-            localStorage.setItem("produit", JSON.stringify(productsList));
-            window.location.reload();
-          };
-        });
-      };
+      handleButtonClick(event, productsList);
     });
   });
 };

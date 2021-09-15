@@ -52,7 +52,7 @@ DisplayOrderValidation(validateOrder, responseServerContact, responseServerOrder
 /**
  * *Fonction de retour à la page d'accueil
  */
-function returnHome() {
+function ReturnHome() {
     localStorage.removeItem("produit");
     localStorage.removeItem("productsTotalPrice");
     localStorage.removeItem("responseServerContact");
@@ -64,4 +64,4 @@ function returnHome() {
 //récupération du click sur le bouton retour à list des oursons
 btnHomeReturn = document.getElementById("btnHomeReturn") ;
 
-btnHomeReturn.addEventListener("click", returnHome) ;
+btnHomeReturn.addEventListener("click", ReturnHome) ;
