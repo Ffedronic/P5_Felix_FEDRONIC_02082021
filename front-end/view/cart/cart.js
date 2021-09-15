@@ -213,6 +213,7 @@ function DisplayProductsLocalStorage(productsList, productsListDisplayLocation, 
   //si le localStorage ne contient pas de produit
   if (productsList == null || productsList == 0) {
     productsListDisplayLength.innerHTML = `<h2>Le panier est vide.</h2>`;
+    productsListDisplayTotalAmount.innerHTML = 0;
   }
   //si le localStorage contient des produits
   else {
@@ -223,6 +224,8 @@ function DisplayProductsLocalStorage(productsList, productsListDisplayLocation, 
     for (let product of productsList) {
       //quantité de produit
       productsQuantities += product.quantity;
+      //montant total de la commande :
+      productsTotalPrice += (product.price/100)*product.quantity ;
       //création des éléments à afficher pour chaque produit
       displayProducts += `
       <article class="card mb-3" id="articleProduct${product.id}">
@@ -267,7 +270,7 @@ function DisplayProductsLocalStorage(productsList, productsListDisplayLocation, 
     //affichage des produits sur la page panier
     productsListDisplayLocation.innerHTML = displayProducts;
     //affichage du montant total de la commande
-    productsListDisplayTotalAmount.innerHTML = `<h2 class="mb-5">Montant de la commande : <span class="h1 fw-bold" id="productsTotalPrice">${productsTotalPrice} €</span></h2>`;
+    productsListDisplayTotalAmount.innerHTML = `${productsTotalPrice}`;
 
     /**
      * ! Appel de la fonction DisplayFOrm
@@ -306,11 +309,13 @@ function handleButtonClick(event, productsList) {
       if (element.id == event.target.dataset.productid) {
         //alors je diminue la quantité du produit dans le localStorage
         if (quantity == 0) {
-          element.quantity = 0;
+          element.quantity = 0 ; 
         } else {
           element.quantity = element.quantity + quantity;
           localStorage.setItem("produit", JSON.stringify(productsList));
           var productsElements = parseInt(document.getElementById("productsElements").innerHTML) + quantity;
+          var totalAmount = parseInt(document.getElementById("totalAmount").innerHTML) + ((quantity*element.price)/100) ;
+          document.getElementById("totalAmount").innerHTML = totalAmount ;
           document.getElementById("productsElements").innerHTML = productsElements;
           document.getElementById("productQuantity" + element.id).innerHTML = element.quantity;
           document.getElementById("subtotalProduct" + element.id).innerHTML = `${(element.price/100)*element.quantity} €`;
@@ -319,8 +324,7 @@ function handleButtonClick(event, productsList) {
         if (element.quantity <= 0) {
           productsList = productsList.filter(element => element.id !== event.target.dataset.productid);
           localStorage.setItem("produit", JSON.stringify(productsList));
-          var article = document.getElementById("articleProduct" + event.target.dataset.productid);
-          article.parentNode.removeChild(article);
+          window.location.reload() ;
         };
       };
     });
@@ -352,8 +356,8 @@ const btnIncreaseProductQuantity = document.querySelectorAll(".btn-success");
  * *fonction d'augmentation de la quantité du produit (paramètres : liste des boutons "+" la quantité des produits, liste des produits du panier)
  */
 function IncreaseProductQuantity(productsButtonIncreaseQuantity, productsList) {
-  productsButtonIncreaseQuantity.forEach(btnDeleteQelement => {
-    btnDeleteQelement.addEventListener('click', event => {
+  productsButtonIncreaseQuantity.forEach(btnAddElement => {
+    btnAddElement.addEventListener('click', event => {
       handleButtonClick(event, productsList)
     });
   });
