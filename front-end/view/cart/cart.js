@@ -225,7 +225,7 @@ function DisplayProductsLocalStorage(productsList, productsListDisplayLocation, 
       //quantité de produit
       productsQuantities += product.quantity;
       //montant total de la commande :
-      productsTotalPrice += (product.price/100)*product.quantity ;
+      productsTotalPrice += (product.price / 100) * product.quantity;
       //création des éléments à afficher pour chaque produit
       displayProducts += `
       <article class="card mb-3" id="articleProduct${product.id}">
@@ -266,7 +266,7 @@ function DisplayProductsLocalStorage(productsList, productsListDisplayLocation, 
       `;
     }
     //affichage de la quantité totale de produits dans le localStorage
-    productsListDisplayLength.innerHTML = `<h2>Le panier contient <span id="productsElements">${productsQuantities}</span> ours.</h2>`;
+    productsListDisplayLength.innerHTML = `<h2>Le panier contient <span id="productsLength">${productsQuantities}</span> ours.</h2>`;
     //affichage des produits sur la page panier
     productsListDisplayLocation.innerHTML = displayProducts;
     //affichage du montant total de la commande
@@ -296,35 +296,83 @@ DisplayProductsLocalStorage(listOfProductStorage, displayProductsInCart, display
 //----------------------------modification de la quantité par article----------------------------------------//
 
 /**
- * * Fonction de modification au click
+ * * Fonction de modification des quantités selon les attributs data des boutons de modification de quantité
  */
 function handleButtonClick(event, productsList) {
+  /**
+   * *Récupération de la cible bouton
+   */
   let button = event.target;
+  /**
+   * *Récupération du data-quantity de la cible bouton
+   */
   let quantity = button.dataset.quantity * 1;
   event.preventDefault;
   event.stopPropagation;
+  /**
+   * *Si le panier localStorage contient un élément
+   */
   if (productsList !== null) {
+    /**
+     * *pour chaque élément
+     */
     productsList.forEach(element => {
-      //si l'id du bouton correspond au produit dans le localStoraga
+      /**
+       * *si l'élément correspond au data-productid de l'élément bouton cible
+       */
       if (element.id == event.target.dataset.productid) {
-        //alors je diminue la quantité du produit dans le localStorage
+        /**
+         * *Alors,
+         */
+        /**
+         * !Si la data-quantity est égale à 0
+         */
         if (quantity == 0) {
-          element.quantity = 0 ; 
+          /**
+           * *La quantité de l'élement passe à 0
+           */
+          element.quantity = 0;
+          /**
+           * *Sinon,
+           */
         } else {
+          /**
+           * *On ajoute la data-quantity à la quantité de l'élément
+           */
           element.quantity = element.quantity + quantity;
+          /**
+           * *La liste des produits du panier mise à jour est stockée dans le localStorage à la clé produit
+           */
           localStorage.setItem("produit", JSON.stringify(productsList));
-          var productsElements = parseInt(document.getElementById("productsElements").innerHTML) + quantity;
-          var totalAmount = parseInt(document.getElementById("totalAmount").innerHTML) + ((quantity*element.price)/100) ;
-          document.getElementById("totalAmount").innerHTML = totalAmount ;
-          document.getElementById("productsElements").innerHTML = productsElements;
+          /**
+           * *L'affichage de la quantité totale des articles est mise à jour
+           */
+          var productsElements = parseInt(document.getElementById("productsLength").innerHTML) + quantity;
+          document.getElementById("productsLength").innerHTML = productsElements;
+          /**
+           * *L'affichage du montant total de la commande est mis à jour
+           */
+          var totalAmount = parseInt(document.getElementById("totalAmount").innerHTML) + ((quantity * element.price) / 100);
+          document.getElementById("totalAmount").innerHTML = totalAmount;
+          /**
+           * *L'affichage de la quantité de l'élément est mis à jour
+           */
           document.getElementById("productQuantity" + element.id).innerHTML = element.quantity;
+          /**
+           * *L'affichage du montant à payer pour l'élément est mis à jour
+           */
           document.getElementById("subtotalProduct" + element.id).innerHTML = `${(element.price/100)*element.quantity} €`;
         }
-        //si la quantité du produit est égale ou inférieure à 0 alors je supprime le produit du localStorage
+        /**
+         * !Si la quantité de l'élément est inférieur ou égale à 0
+         */
         if (element.quantity <= 0) {
+          /**
+           * *Je filtre les éléments du panier pour afficher tous les éléments dont les id ne correspondent pas au productid de l'élément bouton cible
+           */
           productsList = productsList.filter(element => element.id !== event.target.dataset.productid);
           localStorage.setItem("produit", JSON.stringify(productsList));
-          window.location.reload() ;
+          window.location.reload();
         };
       };
     });
