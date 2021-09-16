@@ -58,10 +58,11 @@ function ReturnHome() {
     localStorage.removeItem("responseServerContact");
     localStorage.removeItem("responseServerProducts");
     localStorage.removeItem("responseServerOrderId");
-    window.location.assign("/front-end/view/home/index.html");
+    return window.location.assign("/front-end/view/home/index.html");
 } ;
+
+window.addEventListener('unload', ReturnHome) ;
 
 //récupération du click sur le bouton retour à list des oursons
 btnHomeReturn = document.getElementById("btnHomeReturn") ;
-
 btnHomeReturn.addEventListener("click", ReturnHome) ;

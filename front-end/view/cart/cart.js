@@ -314,11 +314,11 @@ function handleButtonClick(event, productsList) {
    */
   if (productsList !== null) {
     /**
-     * *pour chaque élément
+     * *pour chaque élément de la liste de produits du panier,
      */
     productsList.forEach(element => {
       /**
-       * *si l'élément correspond au data-productid de l'élément bouton cible
+       * *si l'élément correspond au data-productid de la cible bouton
        */
       if (element.id == event.target.dataset.productid) {
         /**
@@ -337,15 +337,15 @@ function handleButtonClick(event, productsList) {
            */
         } else {
           /**
-           * *On ajoute la data-quantity à la quantité de l'élément
+           * *On ajoute la data-quantity de la cible bouton à la quantité de l'élément
            */
           element.quantity = element.quantity + quantity;
           /**
-           * *La liste des produits du panier mise à jour est stockée dans le localStorage à la clé produit
+           * *La liste des produits du panier mise à jour est stockée dans le localStorage associée à la clé produit
            */
           localStorage.setItem("produit", JSON.stringify(productsList));
           /**
-           * *L'affichage de la quantité totale des articles est mise à jour
+           * *L'affichage de la quantité totale des articles est mis à jour
            */
           var productsElements = parseInt(document.getElementById("productsLength").innerHTML) + quantity;
           document.getElementById("productsLength").innerHTML = productsElements;
