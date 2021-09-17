@@ -21,14 +21,22 @@ const displayProductsTotalAmountInCart = document.getElementById('totalAmount');
 /*sélection de l'emplacement du formulaire*/
 const displayProductsFormOrderInCart = document.getElementById("formOrder");
 
-//--------------------affichage des produits dans la page panier-----------------------------------//
-
 /**
  * 
  * * les url d'envoi Post order et le localSotrage, localisation de la page de confirmation 
  */
-const urlSendOrder = "http://localhost:3000/api/teddies/order";
-const urlConfirmationPage = "/front-end/view/order/order.html";
+ const urlSendOrder = "http://localhost:3000/api/teddies/order";
+ const urlConfirmationPage = "/front-end/view/order/order.html";
+ 
+ /**
+  * *Variables regex des controles du formulaire
+  */
+ const regexCityName = /^[ÀÁÂÃÄÅÇÑñÇçÈÉÊËÌÍÎÏÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöøùúûüýÿ\w-]{3,30}$/ ;
+ const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/ ;
+ const regexAddress  = /^[\w\d\s]{3,80}$/ ;
+
+//--------------------affichage des produits dans la page panier-----------------------------------//
+
 
 /*fonction d'affichage du formulaire de contact (paramètre : emplacement de l'affichage du formulaire*/
 function DisplayForm(displayFormLocation) {
@@ -104,12 +112,20 @@ function SendContactProductsId(urlToSend, FormContactProductsId, OrderTotalPrice
   }, 2000);
 
 };
-
+ 
+ /**
+  * *Fonction de test des valeurs des contrôles de formulaire
+  */
+  function ControlValues(regex, value) {
+   if (regex.test(value)) {
+     return true;
+   } else {
+     return false;
+   }
+ } ;
 
 /*fonction de récupération des valeurs du formulaire de contact et les id des produits du panier (paramètre : liste des produits)*/
 function CollectContactProductsId(productsList) {
-  const contact = {};
-  const products = [];
 
   //au clic sur le bouton de validation de commande
   btnSubmit.addEventListener('click', event => {
@@ -123,57 +139,7 @@ function CollectContactProductsId(productsList) {
     var city = document.getElementById("city").value;
     var email = document.getElementById("email").value;
 
-    //l'expression de fonction regex pour tester les variables firstName, lastName et city
-    const regexTestNameAndCity = (element) => {
-      return /^[ÀÁÂÃÄÅÇÑñÇçÈÉÊËÌÍÎÏÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöøùúûüýÿ\w-]{3,30}$/.test(element);
-    };
-
-    //fonction de controle de la valeur firstName
-    function firstNameControl() {
-      if (regexTestNameAndCity(firstName)) {
-        return true;
-      } else {
-        return false;
-      };
-    }
-
-    //fonction de controle de la valeur firstName
-    function lastNameControl() {
-      if (regexTestNameAndCity(lastName)) {
-        return true;
-      } else {
-        return false;
-      };
-    }
-
-    //fonction de controle de la valeur firstName
-    function cityControl() {
-      if (regexTestNameAndCity(city)) {
-        return true;
-      } else {
-        return false;
-      };
-    }
-
-    //fonction de controle de la valeur email
-    function emailControl() {
-      if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-        return true;
-      } else {
-        return false;
-      };
-    }
-
-    //fonction de controle de la valeur adress
-    function adressControl() {
-      if (/^[\w\d\s]{3,80}$/.test(adress)) {
-        return true;
-      } else {
-        return false;
-      };
-    }
-
-    if (firstNameControl() && lastNameControl() && cityControl() && emailControl() && adressControl()) {
+    if (ControlValues(regexCityName, firstName) && ControlValues(regexCityName, lastName) && ControlValues(regexCityName, city) && ControlValues(regexAddress, adress) && ControlValues(regexEmail, email)) {
       console.log("ok");
       //création de l'objet contact contenant les valeurs des contrôles du formulaire
       const contact = {
@@ -321,6 +287,7 @@ function handleButtonClick(event, productsList) {
        * *si l'élément correspond au data-productid de la cible bouton
        */
       if (element.id == event.target.dataset.productid) {
+        var productsElements, totalAmount ;
         /**
          * *Alors,
          */
@@ -329,9 +296,9 @@ function handleButtonClick(event, productsList) {
          */
         if (quantity == 0) {
           /**
-           * *La quantité de l'élement passe à 0
+           * *La quantité de l'élement passe à 0 et est supprimé
            */
-          element.quantity = 0;
+           element.quantity = 0 ;
           /**
            * *Sinon,
            */
@@ -347,12 +314,12 @@ function handleButtonClick(event, productsList) {
           /**
            * *L'affichage de la quantité totale des articles est mis à jour
            */
-          var productsElements = parseInt(document.getElementById("productsLength").innerHTML) + quantity;
+          productsElements = parseInt(document.getElementById("productsLength").innerHTML) + quantity;
           document.getElementById("productsLength").innerHTML = productsElements;
           /**
            * *L'affichage du montant total de la commande est mis à jour
            */
-          var totalAmount = parseInt(document.getElementById("totalAmount").innerHTML) + ((quantity * element.price) / 100);
+          totalAmount = parseInt(document.getElementById("totalAmount").innerHTML) + ((quantity * element.price) / 100);
           document.getElementById("totalAmount").innerHTML = totalAmount;
           /**
            * *L'affichage de la quantité de l'élément est mis à jour
@@ -372,7 +339,7 @@ function handleButtonClick(event, productsList) {
            */
           productsList = productsList.filter(element => element.id !== event.target.dataset.productid);
           localStorage.setItem("produit", JSON.stringify(productsList));
-          window.location.reload();
+          window.location.reload() ;
         };
       };
     });

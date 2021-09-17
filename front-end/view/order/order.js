@@ -61,6 +61,9 @@ function ReturnHome() {
     return window.location.assign("/front-end/view/home/index.html");
 } ;
 
+/**
+ * Si le client fait un retour en arrière,
+ */
 window.addEventListener('unload', ReturnHome) ;
 
 //récupération du click sur le bouton retour à list des oursons
