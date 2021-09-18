@@ -109,7 +109,7 @@ function SendContactProductsId(urlToSend, FormContactProductsId, OrderTotalPrice
     })
   setTimeout(() => {
     window.location.assign(urlConfirmationPage)
-  }, 2000);
+  }, 1500);
 
 };
  
@@ -162,11 +162,12 @@ function CollectContactProductsId(productsList) {
         products
       };
 
+      var orderAmount = document.getElementById("totalAmount").innerHTML ; 
       /**
        * ! Appel de la fonction d'affichage d'envoi du formulaire, le total commande, vers le serveur et la réponse du serveur vers la page de confirmation 
        * ! (paramètres : url d'envoi post, objet json avec les valeurs du formulaire et les id produits, le montant total de la commande, page de confirmation)
        */
-      SendContactProductsId(urlSendOrder, contactProductsToSend, productsTotalPrice, urlConfirmationPage);
+      SendContactProductsId(urlSendOrder, contactProductsToSend, orderAmount, urlConfirmationPage);
     } else {
       console.log("ko");
       alert("remplissez correctement tous les champs du formulaire.")
@@ -295,10 +296,56 @@ function handleButtonClick(event, productsList) {
          * !Si la data-quantity est égale à 0
          */
         if (quantity == 0) {
-          /**
-           * *La quantité de l'élement passe à 0 et est supprimé
+           /**
+           * *La quantité du produit est soustraite à la quantité de produits présents dans le panier
            */
-           element.quantity = 0 ;
+          productsElements = parseInt(document.getElementById("productsLength").innerHTML) - parseInt(document.getElementById("productQuantity" + element.id).innerHTML);
+          document.getElementById("productsLength").innerHTML = productsElements;
+          /**
+           * *Le prix égal à la quantité du produit est soustrait au montant total de la commande
+           */
+          totalAmount = parseInt(document.getElementById("totalAmount").innerHTML) - parseInt(document.getElementById("subtotalProduct" + element.id).innerHTML);
+          document.getElementById("totalAmount").innerHTML = totalAmount;
+          /**
+           * *L'affichage du produit est supprimé de la page panier
+           */
+          var article = document.getElementById("articleProduct" + element.id) ;
+          displayProductsInCart.removeChild(article) ;
+          /**
+           * *Le produit est supprimé de la liste des produits présents dans le panier et le nouveau panier est stocké dans le localStorage
+           */
+          productsList = productsList.filter(element => element.id !== event.target.dataset.productid);
+          localStorage.setItem("produit", JSON.stringify(productsList));
+          /**
+           * ! Si la quantité de produits présents dans le panier ou le montant total de la commande est égal à 0
+           */
+          if(productsElements <=0 || totalAmount <=0) {
+            /**
+             * * La liste des produits du panier est remise à 0 et stockée dans le localStorage
+             */
+            productsList = [] ;
+            localStorage.setItem("produit", JSON.stringify(productsList));
+            /**
+             * * La quantité de produits présents dans le panier affiche "vide"
+             */
+            displayProductsLengthInCart.innerHTML = `<h2>Le panier est vide.<h2>` ;
+            /**
+             * * L'emplacement de l'affichage des produits présents dans le panier est supprimé
+             */
+            var displayCart = document.getElementById("displayCart") ;
+            displayCart.removeChild(displayProductsInCart) ;
+            /**
+             * * Le montant total de la commande affiche 0€
+             */
+            var displayAmount = document.getElementById("displayAmount") ;
+            displayAmount.innerHTML = `<h2>Montant total : 0 €</h2>` ;
+            /**
+             * *Le formulaire est supprimé de la page du panier
+             */
+            var cart = document.getElementById("cart") ;
+            cart.removeChild(displayProductsFormOrderInCart) ;
+          }
+
           /**
            * *Sinon,
            */
@@ -331,15 +378,48 @@ function handleButtonClick(event, productsList) {
           document.getElementById("subtotalProduct" + element.id).innerHTML = `${(element.price/100)*element.quantity} €`;
         }
         /**
-         * !Si la quantité de l'élément est inférieur ou égale à 0
+         * ! Si la quantité de l'élément est inférieur ou égale à 0
          */
         if (element.quantity <= 0) {
           /**
-           * *Je filtre les éléments du panier pour afficher tous les éléments dont les id ne correspondent pas au productid de l'élément bouton cible
+           * *L'affichage du produit est supprimé de la page panier
            */
-          productsList = productsList.filter(element => element.id !== event.target.dataset.productid);
-          localStorage.setItem("produit", JSON.stringify(productsList));
-          window.location.reload() ;
+           var article = document.getElementById("articleProduct" + element.id) ;
+           displayProductsInCart.removeChild(article) ;
+           /**
+            * *Le produit est supprimé de la liste des produits présents dans le panier et le nouveau panier est stocké dans le localStorage
+            */
+           productsList = productsList.filter(element => element.id !== event.target.dataset.productid);
+           localStorage.setItem("produit", JSON.stringify(productsList));
+           /**
+            * ! Si la quantité de produits présents dans le panier ou le montant total de la commande est égal à 0
+            */
+           if(productsElements <=0 || totalAmount <=0) {
+             /**
+              * * La liste des produits du panier est remise à 0 et stockée dans le localStorage
+              */
+             productsList = [] ;
+             localStorage.setItem("produit", JSON.stringify(productsList));
+             /**
+              * * La quantité de produits présents dans le panier affiche "vide"
+              */
+             displayProductsLengthInCart.innerHTML = `<h2>Le panier est vide.<h2>` ;
+             /**
+              * * L'emplacement de l'affichage des produits présents dans le panier est supprimé
+              */
+             var displayCart = document.getElementById("displayCart") ;
+             displayCart.removeChild(displayProductsInCart) ;
+             /**
+              * * Le montant total de la commande affiche 0€
+              */
+             var displayAmount = document.getElementById("displayAmount") ;
+             displayAmount.innerHTML = `<h2>Montant total : 0 €</h2>` ;
+             /**
+              * *Le formulaire est supprimé de la page du panier
+              */
+             var cart = document.getElementById("cart") ;
+             cart.removeChild(displayProductsFormOrderInCart) ;
+           }
         };
       };
     });
