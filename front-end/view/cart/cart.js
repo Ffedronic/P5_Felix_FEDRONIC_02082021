@@ -169,8 +169,21 @@ function CollectContactProductsId(productsList) {
        */
       SendContactProductsId(urlSendOrder, contactProductsToSend, orderAmount, urlConfirmationPage);
     } else {
-      console.log("ko");
-      alert("remplissez correctement tous les champs du formulaire.")
+     if(!ControlValues(regexCityName, firstName)) {
+       alert("Le prénom : au moins 3 lettres et pas de caractères spéciaux.") ;
+     }
+     if(!ControlValues(regexCityName, lastName)) {
+      alert("adresse : au moins 3 lettres et pas de caractères spéciaux.") ;
+     }
+     if(!ControlValues(regexCityName, city)) {
+      alert("Ville : au moins 3 lettres et pas de caractères spéciaux.") ;
+     }
+     if(!ControlValues(regexAddress, adress)) {
+      alert("Adresse : adresse non valide.") ;
+     }
+     if(!ControlValues(regexEmail, email)){
+       alert("Mail : adresse mail non valide.")
+     }
     }
   });
 };
