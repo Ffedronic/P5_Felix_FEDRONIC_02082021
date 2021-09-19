@@ -316,8 +316,9 @@ function handleButtonClick(event, productsList) {
           /**
            * *Le produit est supprimé de la liste des produits présents dans le panier et le nouveau panier est stocké dans le localStorage
            */
-          productsList = productsList.map(element => element.id != event.target.dataset.productid);
+          productsList = productsList.filter(element => element.id != event.target.dataset.productid);
           localStorage.setItem("produit", JSON.stringify(productsList));
+          window.location.reload() ;
           /**
            * ! Si la quantité de produits présents dans le panier ou le montant total de la commande est égal à 0
            */
@@ -393,6 +394,7 @@ function handleButtonClick(event, productsList) {
            */
           productsList = productsList.filter(element => element.id !== event.target.dataset.productid);
           localStorage.setItem("produit", JSON.stringify(productsList));
+          window.location.reload() ;
           /**
            * ! Si la quantité de produits présents dans le panier ou le montant total de la commande est égal à 0
            */
