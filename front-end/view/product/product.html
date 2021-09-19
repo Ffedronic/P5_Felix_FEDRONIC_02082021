@@ -27,17 +27,17 @@
     <header>
       <nav class="navbar navbar-expand-md navbar-light bg-secondary">
         <div class="container">
-          <span class="navbar-brand me-5 fs-1 fw-bold text-light">Peluches Orinoco</span>
+          <span class="navbar-brand me-5 fs-1 fw-bold text-light"><img src="/images/logo.png" alt="logo orinoco" height="50" width="60" class="d-inline-block align-text-bottom me-2 me-lg-4">Ours Orinoco</span>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul class="navbar-nav nav-tabs">
+            <ol class="navbar-nav nav-tabs">
               <li class="nav-item">
                 <a class="nav-link active fw-bold fs-5 text-black" href="#">Fiche Produit : <span id="productName"></span></a>
               </li>
-            </ul>
+            </ol>
           </div>
         </div>
       </nav>
@@ -45,13 +45,16 @@
 
     <!--Page Content-->
     <div class="container">
-      <main class="my-5">
-        <section id="hero">
-          <a href="/front-end/view/home/index.html">
-            <button class="btn btn-secondary fw-bold"><i class="fas fa-arrow-left fa-1x me-4"></i>Accueil</button>
+      <main class="my-3">   
+        <div class="text-center text-lg-start mb-2">
+          <a href="/front-end/view/home/index.html" class="btn btn-warning fw-bold" aria-label="retour à la page d'accueil">
+            <i class="fas fa-arrow-left fa-1x me-1"></i>
+            Accueil
           </a>
-          <h1 class="text-center">Les ours en peluches faits main</h1>
-        </section>  
+        </div>
+        <section id="hero" class="text-center">
+          <h1 class="text-center fw-bold mb-4">Peluche by Orinoco</h1>
+        </section>
         <div id="product_card" class="d-flex justify-content-center">
         </div>
       </main>

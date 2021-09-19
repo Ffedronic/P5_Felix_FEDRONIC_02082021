@@ -28,22 +28,22 @@
   <header>
     <nav class="navbar navbar-expand-md navbar-light bg-secondary">
       <div class="container">
-        <span class="navbar-brand me-5 fs-1 fw-bold text-light">Peluches Orinoco</span>
+        <span class="navbar-brand me-5 fs-1 fw-bold text-light"><img src="/images/logo.png" alt="logo orinoco" height="50" width="60" class="d-inline-block align-text-bottom me-2 me-lg-4">Ours Orinoco</span>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
           aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <ul class="navbar-nav nav-tabs">
+          <ol class="navbar-nav nav-tabs">
             <li class="nav-item">
-              <a class="nav-link fw-bold fs-5 text-white" aria-current="page"
+              <a class="nav-link fw-bold fs-5 text-white"
                 href="/front-end/view/home/index.html">Accueil</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active fw-bold fs-5 text-black" href="/front-end/view/cart/cart.html">Panier<i
+              <a class="nav-link active fw-bold fs-5 text-black" href="/front-end/view/cart/cart.html" aria-current="page">Panier<i
                   class="fas fa-shopping-cart ms-2"></i></a>
             </li>
-          </ul>
+          </ol>
         </div>
       </div>
     </nav>
@@ -57,69 +57,69 @@
         <div id="cardProductsLength" class="text-center"></div>
       </section>
       <div class="row" id="cart">
-        <div class="col-lg-6" id="displayCart">
+        <div class="col-lg-7" id="displayCart">
           <div id="DisplayArticlesInCart">
           </div>
           <div id="displayAmount">
             <h2>Montant total : <span id="totalAmount">0</span> €</h2>
           </div>
         </div>
-        <div id="formOrder"  class="col-lg-6">
+        <div class="col-lg-5" id="formOrder">
         </div>
       </div>
     </main>
   </div>
 
-  <!--Footer-->
-  <footer class="d-md-flex justify-content-around bg-secondary p-2">
-    <section class="bg-primary rounded-3 p-2 mb-3">
-      <h2 class="text-center text-light">Service Client</h2>
-      <ul class="list-unstyled">
-        <li>
-          <a href="#" class="list-group-item list-group-item-action d-flex align-items-baseline">
-            <i class="fas fa-wallet me-2"></i>
-            <p>Paiement et livraison</p>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="list-group-item list-group-item-action d-flex align-items-baseline">
-            <i class="far fa-file-alt me-2"></i>
-            <p>Conditions générales de ventes</p>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="list-group-item list-group-item-action d-flex align-items-baseline">
-            <i class="fas fa-user me-2"></i>
-            <p>Mon compte</p>
-          </a>
-        </li>
-      </ul>
-    </section>
-    <section class="bg-primary rounded-3 p-2 mb-3">
-      <h2 class="text-center text-light">Contactez-nous</h2>
-      <ul class="list-unstyled">
-        <li>
-          <a class="list-group-item list-group-item-action d-flex align-items-baseline">
-            <i class="fas fa-map-marker-alt me-2"></i>
-            <p>16 rue du Tourmalet, 31240 L'Union</p>
-          </a>
-        </li>
-        <li>
-          <a href="tel:+33749284152" class="list-group-item list-group-item-action d-flex align-items-baseline">
-            <i class="fas fa-mobile-alt me-2"></i>
-            <p>Tel. : 07.49.28.41.52</p>
-          </a>
-        </li>
-        <li>
-          <a href="mailto:servicesconso@orinoco.fr"
-            class="list-group-item list-group-item-action d-flex align-items-baseline">
-            <i class="far fa-envelope me-2"></i>
-            <p>servicesconso@orinoco.fr</p>
-          </a>
-        </li>
-      </ul>
-    </section>
-  </footer>
+ <!--Footer-->
+ <footer class="d-md-flex justify-content-around bg-secondary p-2">
+  <section class="bg-primary rounded-3 my-3">
+    <h2 class="text-center text-white fw-bold">Service Client</h2>
+    <ol class=" list-group list-group-flush list-unstyled">
+      <li>
+        <a href="#" class="list-group-item list-group-item-action d-flex align-items-baseline">
+          <i class="fas fa-wallet me-2 text-secondary"></i>
+          <p>Paiement et livraison</p>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="list-group-item list-group-item-action d-flex align-items-baseline">
+          <i class="far fa-file-alt me-2 text-secondary"></i>
+          <p>Conditions générales de ventes</p>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="list-group-item list-group-item-action d-flex align-items-baseline">
+          <i class="fas fa-user me-2 text-secondary"></i>
+          <p>Mon compte</p>
+        </a>
+      </li>
+    </ol>
+  </section>
+  <section class="bg-primary rounded-3 my-3">
+    <h2 class="text-center text-white fw-bold">Contactez-nous</h2>
+    <ol class="list-group list-group-flush list-unstyled">
+      <li>
+        <a class="list-group-item list-group-item-action d-flex align-items-baseline">
+          <i class="fas fa-map-marker-alt me-2 text-secondary"></i>
+          <p>16 rue du Tourmalet, 31240 L'Union</p>
+        </a>
+      </li>
+      <li>
+        <a href="tel:+33749284152" class="list-group-item list-group-item-action d-flex align-items-baseline">
+          <i class="fas fa-mobile-alt me-2 text-secondary"></i>
+          <p>Tel. : 07.49.28.41.52</p>
+        </a>
+      </li>
+      <li>
+        <a href="mailto:servicesconso@orinoco.fr"
+          class="list-group-item list-group-item-action d-flex align-items-baseline">
+          <i class="far fa-envelope me-2 text-secondary"></i>
+          <p>servicesconso@orinoco.fr</p>
+        </a>
+      </li>
+    </ol>
+  </section>
+</footer>
 
   <!-- Option 1: Bootstrap Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"

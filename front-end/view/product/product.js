@@ -84,17 +84,18 @@ function DisplayDownloadedProduct(productElements) {
           <label for="colorSelect" class="form-label">Choisissez votre couleur :</label>
           <select name="color" id="colorSelect" class="form-select mb-4" arial-labelby="color"></select>
         <form>
+        <p class="fw-bold">Choisissez la quantité de votre produit dans votre panier.</p>
       </div>
       <div class="card-footer text-center">
-        <button type="button" id="btnSubmit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Mettre dans le Panier</button>
+        <button type="button" id="btnSubmit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmationModal" aria-label="mettre dans le panier">Mettre dans le Panier</button>
       </div>
     </article>
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h3 class="modal-title" id="exampleModalLabel">${productElements.name} a bien été rajouté au panier.</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h3 class="modal-title" id="confirmationModalLabel">${productElements.name} a bien été rajouté au panier.</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="fermer"></button>
           </div>
           <div class="modal-body">
             <img src="${productElements.imageUrl}" class="card-img-top" alt="peluche fait main ${productElements.name}">
@@ -102,8 +103,8 @@ function DisplayDownloadedProduct(productElements) {
             <p class="card_text">Prix : <span class="fw-bold">${productElements.price/100}€</span></p>
           </div>
           <div class="modal-footer">
-            <a href="/front-end/view/cart/cart.html" class="btn btn-secondary">Mon Panier</a>
-            <a href="/front-end/view/home/index.html" class="btn btn-primary">Liste des produits</a>
+            <a href="/front-end/view/cart/cart.html" class="btn btn-success" aria-label="finaliser ma commande">Finaliser ma commande</a>
+            <a href="/front-end/view/home/index.html" class="btn btn-primary" aria-label="continuer mes achats">Continuer mes achats</a>
           </div>
         </div>
       </div>

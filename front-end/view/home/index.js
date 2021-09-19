@@ -11,7 +11,7 @@ function DisplayDownloadProducts(listDownloadedProducts) {
               <p class="card-text">${article.description}</p>
             </div>
             <div class="card-footer text-center">
-              <a href="/front-end/view/product/product.html?id=${article._id}" class="btn btn-primary" id="detail">Voir l'article</a>
+              <a href="/front-end/view/product/product.html?id=${article._id}" class="btn btn-primary">Voir l'article</a>
             </div>
         </article>
       `

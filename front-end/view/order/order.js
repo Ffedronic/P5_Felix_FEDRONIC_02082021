@@ -62,10 +62,10 @@ function ReturnHome() {
 } ;
 
 /**
- * Si le client fait un retour en arrière,
+ * Si le client part de la page autrement qu'en cliquant sur le bouton retour à la liste des oursons
  */
 window.addEventListener('unload', ReturnHome) ;
 
-//récupération du click sur le bouton retour à list des oursons
+//récupération du click sur le bouton retour à la liste des oursons
 btnHomeReturn = document.getElementById("btnHomeReturn") ;
 btnHomeReturn.addEventListener("click", ReturnHome) ;
