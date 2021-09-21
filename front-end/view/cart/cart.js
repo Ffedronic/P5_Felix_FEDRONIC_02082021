@@ -3,6 +3,7 @@
 /*déclaration de la variable listOfProductStorage contenant les produits dans la clé produit du localStorage*/
 var listOfProductStorage = JSON.parse(localStorage.getItem("produit"));
 
+
 /*création de la variable number contenant le prix total de la commande*/
 var productsTotalPrice = 0;
 
@@ -22,7 +23,6 @@ const displayProductsTotalAmountInCart = document.getElementById('totalAmount');
 const displayProductsFormOrderInCart = document.getElementById("formOrder");
 
 /**
- * 
  * * les url d'envoi Post order et le localSotrage, localisation de la page de confirmation 
  */
 const urlSendOrder = "http://localhost:3000/api/teddies/order";
@@ -103,14 +103,11 @@ function SendContactProductsId(urlToSend, FormContactProductsId, OrderTotalPrice
       localStorage.setItem("responseServerOrderId", JSON.stringify(responseServerOrderId));
       //stockage dans le localStorage de l'objet productsTotalPrice contenant le montant total de la commande
       localStorage.setItem("productsTotalPrice", JSON.stringify(OrderTotalPrice));
+      window.location.assign(urlConfirmationPage) ;
     })
     .catch((err) => {
       console.log(err);
     })
-  setTimeout(() => {
-    window.location.assign(urlConfirmationPage)
-  }, 1500);
-
 };
 
 /**
@@ -139,8 +136,23 @@ function CollectContactProductsId(productsList) {
     var city = document.getElementById("city").value;
     var email = document.getElementById("email").value;
 
-    if (ControlValues(regexCityName, firstName) && ControlValues(regexCityName, lastName) && ControlValues(regexCityName, city) && ControlValues(regexAddress, adress) && ControlValues(regexEmail, email)) {
-      console.log("ok");
+    if(!ControlValues(regexCityName, firstName)) {
+      alert("Le prénom : au moins 3 lettres et pas de caractères spéciaux.") ;
+    }
+    else if(!ControlValues(regexCityName, lastName)) {
+     alert("adresse : au moins 3 lettres et pas de caractères spéciaux.") ;
+    }
+    else if(!ControlValues(regexCityName, city)) {
+     alert("Ville : au moins 3 lettres et pas de caractères spéciaux.") ;
+    }
+    else if(!ControlValues(regexAddress, adress)) {
+     alert("Adresse : adresse non valide.") ;
+    }
+    else if(!ControlValues(regexEmail, email)){
+      alert("Mail : adresse mail non valide.")
+    } 
+    else {
+    console.log("ok");
       //création de l'objet contact contenant les valeurs des contrôles du formulaire
       const contact = {
         firstName: firstName,
@@ -168,22 +180,6 @@ function CollectContactProductsId(productsList) {
        * ! (paramètres : url d'envoi post, objet json avec les valeurs du formulaire et les id produits, le montant total de la commande, page de confirmation)
        */
       SendContactProductsId(urlSendOrder, contactProductsToSend, orderAmount, urlConfirmationPage);
-    } else {
-     if(!ControlValues(regexCityName, firstName)) {
-       alert("Le prénom : au moins 3 lettres et pas de caractères spéciaux.") ;
-     }
-     if(!ControlValues(regexCityName, lastName)) {
-      alert("adresse : au moins 3 lettres et pas de caractères spéciaux.") ;
-     }
-     if(!ControlValues(regexCityName, city)) {
-      alert("Ville : au moins 3 lettres et pas de caractères spéciaux.") ;
-     }
-     if(!ControlValues(regexAddress, adress)) {
-      alert("Adresse : adresse non valide.") ;
-     }
-     if(!ControlValues(regexEmail, email)){
-       alert("Mail : adresse mail non valide.")
-     }
     }
   });
 };
@@ -280,7 +276,9 @@ DisplayProductsLocalStorage(listOfProductStorage, displayProductsInCart, display
 /**
  * * Fonction de modification des quantités selon les attributs data des boutons de modification de quantité
  */
-function handleButtonClick(event, productsList) {
+function handleButtonClick(event) {
+
+  productsList = JSON.parse(localStorage.getItem("produit")) ;
   /**
    * *Récupération de la cible bouton
    */
@@ -309,59 +307,8 @@ function handleButtonClick(event, productsList) {
          * ! Si la data-quantity est égale à 0
          */
         if (quantity == 0) {
-         
-          /**
-           * *La quantité du produit est soustraite à la quantité de produits présents dans le panier
-           */
-          productsElements = parseInt(document.getElementById("productsLength").innerHTML) - parseInt(document.getElementById("productQuantity" + element.id).innerHTML);
-          document.getElementById("productsLength").innerHTML = productsElements;
-          /**
-           * *Le prix égal à la quantité du produit est soustrait au montant total de la commande
-           */
-          totalAmount = parseInt(document.getElementById("totalAmount").innerHTML) - parseInt(document.getElementById("subtotalProduct" + element.id).innerHTML);
-          document.getElementById("totalAmount").innerHTML = totalAmount;
-          /**
-           * *L'affichage du produit est supprimé de la page panier
-           */
-          var article = document.getElementById("articleProduct" + element.id);
-          console.log(displayProductsInCart) ;
-          displayProductsInCart.removeChild(article);
-          /**
-           * *Le produit est supprimé de la liste des produits présents dans le panier et le nouveau panier est stocké dans le localStorage
-           */
-          productsList = productsList.filter(e => e.id != event.target.dataset.productid);
-          localStorage.setItem("produit", JSON.stringify(productsList));
-          window.location.assign("/front-end/view/cart/cart.html") ;
-          
-          /**
-           * ! Si la quantité de produits présents dans le panier ou le montant total de la commande est égal à 0
-           */
-          if (productsElements <= 0 || totalAmount <= 0) {
-            /**
-             * * La liste des produits du panier est remise à 0 et stockée dans le localStorage
-             */
-            productsList = [];
-            localStorage.setItem("produit", JSON.stringify(productsList));
-            /**
-             * * La quantité de produits présents dans le panier affiche "vide"
-             */
-            displayProductsLengthInCart.innerHTML = `<h2>Le panier est vide.<h2>`;
-            /**
-             * * L'emplacement de l'affichage des produits présents dans le panier est supprimé
-             */
-            var displayCart = document.getElementById("displayCart");
-            displayCart.removeChild(displayProductsInCart);
-            /**
-             * * Le montant total de la commande affiche 0€
-             */
-            var displayAmount = document.getElementById("displayAmount");
-            displayAmount.innerHTML = `<h2>Montant total : 0 €</h2>`;
-            /**
-             * *Le formulaire est supprimé de la page du panier
-             */
-            var cart = document.getElementById("cart");
-            cart.removeChild(displayProductsFormOrderInCart);
-          }
+
+          element.quantity = 0 ;
 
           /**
            * *Sinon,
@@ -399,26 +346,31 @@ function handleButtonClick(event, productsList) {
          */
         if (element.quantity <= 0) {
           /**
-           * *L'affichage du produit est supprimé de la page panier
+           * *La quantité du produit est soustraite à la quantité de produits présents dans le panier
            */
-          var article = document.getElementById("articleProduct" + element.id);
-          displayProductsInCart.removeChild(article) ;
-          /**
-           * *Le produit est supprimé de la liste des produits présents dans le panier et le nouveau panier est stocké dans le localStorage
-           */
-          productsList = productsList.filter(element => element.id !== event.target.dataset.productid);
-          localStorage.setItem("produit", JSON.stringify(productsList));
-          window.location.assign("/front-end/view/cart/cart.html") ;
+           productsElements = parseInt(document.getElementById("productsLength").innerHTML) - parseInt(document.getElementById("productQuantity" + element.id).innerHTML);
+           document.getElementById("productsLength").innerHTML = productsElements;
+           /**
+            * *Le prix égal à la quantité du produit est soustrait au montant total de la commande
+            */
+           totalAmount = parseInt(document.getElementById("totalAmount").innerHTML) - parseInt(document.getElementById("subtotalProduct" + element.id).innerHTML);
+           document.getElementById("totalAmount").innerHTML = totalAmount;
+           /**
+            * *L'affichage du produit est supprimé de la page panier
+            */
+           var article = document.getElementById("articleProduct" + element.id);
+           displayProductsInCart.removeChild(article);
+           /**
+            * *Le produit est supprimé de la liste des produits présents dans le panier et le nouveau panier est stocké dans le localStorage
+            */
+           productsList = productsList.filter(element => element.id != event.target.dataset.productid);
+           localStorage.setItem("produit", JSON.stringify(productsList));
+
          
           /**
            * ! Si la quantité de produits présents dans le panier ou le montant total de la commande est égal à 0
            */
           if (productsElements <= 0 || totalAmount <= 0) {
-            /**
-             * * La liste des produits du panier est remise à 0 et stockée dans le localStorage
-             */
-            productsList = [];
-            localStorage.setItem("produit", JSON.stringify(productsList));
             /**
              * * La quantité de produits présents dans le panier affiche "vide"
              */
@@ -453,10 +405,10 @@ const btnDecreaseProductQuantity = document.querySelectorAll(".btn-warning");
 /**
  * *fonction de diminution de la quantité du produit (paramètres : liste des boutons "-" la quantité des produits, liste des produits du panier)
  */
-function DecreaseProductQuantity(productsButtonDecreaseQuantity, productsList) {
+function DecreaseProductQuantity(productsButtonDecreaseQuantity) {
   productsButtonDecreaseQuantity.forEach(btnDeleteQelement => {
     btnDeleteQelement.addEventListener('click', event => {
-      handleButtonClick(event, productsList)
+      handleButtonClick(event)
     });
   });
 };
@@ -469,10 +421,10 @@ const btnIncreaseProductQuantity = document.querySelectorAll(".btn-success");
 /**
  * *fonction d'augmentation de la quantité du produit (paramètres : liste des boutons "+" la quantité des produits, liste des produits du panier)
  */
-function IncreaseProductQuantity(productsButtonIncreaseQuantity, productsList) {
+function IncreaseProductQuantity(productsButtonIncreaseQuantity) {
   productsButtonIncreaseQuantity.forEach(btnAddElement => {
     btnAddElement.addEventListener('click', event => {
-      handleButtonClick(event, productsList)
+      handleButtonClick(event)
     });
   });
 }
@@ -485,11 +437,11 @@ const btnDeleteProduct = document.querySelectorAll(".btn-danger");
 /**
  * *fonction de suppression du produit (paramètres : liste des boutons "supprimer"  des produits, liste des produits du panier)
  */
-function DeleteProduct(productsButtonDelete, productsList) {
+function DeleteProduct(productsButtonDelete) {
   productsButtonDelete.forEach(btnDeleteElement => {
     //au click
     btnDeleteElement.addEventListener('click', event => {
-      handleButtonClick(event, productsList);
+      handleButtonClick(event);
     });
   });
 };
@@ -497,14 +449,14 @@ function DeleteProduct(productsButtonDelete, productsList) {
 /**
  * ! Appel de la fonction DecreaseProductQuantity (paramètres : liste des boutons "-" la quantité des produits, liste des produits du localStorage)
  */
-DecreaseProductQuantity(btnDecreaseProductQuantity, listOfProductStorage);
+DecreaseProductQuantity(btnDecreaseProductQuantity);
 
 /**
  * ! Appel de la fonction IncreaseProductQuantity (paramètres : liste des boutons "+" la quantité des produits, liste des produits du localStorage)
  */
-IncreaseProductQuantity(btnIncreaseProductQuantity, listOfProductStorage);
+IncreaseProductQuantity(btnIncreaseProductQuantity);
 
 /**
  * ! Appel de la fonction de suppression du produit (paramètres : liste des boutons "supprimer"  des produits, liste des produits du localStorage)
  */
-DeleteProduct(btnDeleteProduct, listOfProductStorage);
+DeleteProduct(btnDeleteProduct);
