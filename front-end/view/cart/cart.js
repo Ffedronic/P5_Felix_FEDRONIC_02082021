@@ -136,20 +136,20 @@ function CollectContactProductsId(productsList) {
     var city = document.getElementById("city").value;
     var email = document.getElementById("email").value;
 
-    if(!ControlValues(regexCityName, firstName)) {
-      alert("Le prénom : au moins 3 lettres et pas de caractères spéciaux.") ;
+    if(!ControlValues(regexEmail, email)) {
+      alert("L'e-mail : adresse mail non valide.") ;
+    }
+    else if(!ControlValues(regexCityName, firstName)) {
+     alert("Le prénom : au moins 3 lettres et pas de caractères spéciaux.") ;
     }
     else if(!ControlValues(regexCityName, lastName)) {
-     alert("adresse : au moins 3 lettres et pas de caractères spéciaux.") ;
-    }
-    else if(!ControlValues(regexCityName, city)) {
-     alert("Ville : au moins 3 lettres et pas de caractères spéciaux.") ;
+     alert("Le nom : au moins 3 lettres et pas de caractères spéciaux.") ;
     }
     else if(!ControlValues(regexAddress, adress)) {
-     alert("Adresse : adresse non valide.") ;
+     alert("Adresse : adresse de livraison non valide.") ;
     }
-    else if(!ControlValues(regexEmail, email)){
-      alert("Mail : adresse mail non valide.")
+    else if(!ControlValues(regexCityName, city)){
+      alert("Ville : au moins 3 lettres et pas de caractères spéciaux.")
     } 
     else {
     console.log("ok");
@@ -207,7 +207,7 @@ function DisplayProductsLocalStorage(productsList, productsListDisplayLocation, 
       <article class="card mb-3" id="articleProduct${product.id}">
         <div class="row">
           <div class="col-sm-4">
-            <img src="${product.image}" class="img-fluid rounded-start" alt="${product.name} peluche faite main" style="min-height: 150px;">
+            <img src="${product.image}" class="img-fluid rounded-start" alt="${product.name} peluche faite main">
           </div>
           <div class="col-12 col-sm-8">
             <div class="card-body">
@@ -366,7 +366,6 @@ function handleButtonClick(event) {
            productsList = productsList.filter(element => element.id != event.target.dataset.productid);
            localStorage.setItem("produit", JSON.stringify(productsList));
 
-         
           /**
            * ! Si la quantité de produits présents dans le panier ou le montant total de la commande est égal à 0
            */

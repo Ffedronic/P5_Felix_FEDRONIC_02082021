@@ -5,6 +5,12 @@
 }
 
 @mixin tablet-only {
+    @media all and (min-width : 768px) {
+        @content ;
+    }
+}
+
+@mixin tablet-only {
     @media all and (min-width : 576px){
         @content;
     }

@@ -1,0 +1,15 @@
+.container {
+    #DisplayArticlesInCart {
+        img {
+            
+            @include desktop-only {
+                min-height: 10em;
+            }
+
+            @include tablet-only {
+                min-height: 9em;
+            }
+
+        }
+    }
+}

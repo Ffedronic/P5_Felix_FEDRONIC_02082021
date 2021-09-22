@@ -24,4 +24,15 @@ body .container {
   }
 }
 
+@media all and (min-width: 1025px) {
+  .container #DisplayArticlesInCart img {
+    min-height: 10em;
+  }
+}
+@media all and (min-width: 576px) {
+  .container #DisplayArticlesInCart img {
+    min-height: 9em;
+  }
+}
+
 /*# sourceMappingURL=style.css.map */
