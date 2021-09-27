@@ -1,6 +1,7 @@
 //---------------------------------déclaration des variables---------------------------------------// 
 
-/*déclaration de la variable listOfProductStorage contenant les produits dans la clé produit du localStorage*/
+/*déclaration de la variable listOfProductStorage contenant les produits dans la clé produit du
+ localStorage*/
 var listOfProductStorage = JSON.parse(localStorage.getItem("produit"));
 
 
@@ -298,7 +299,7 @@ function handleButtonClick(event) {
      */
     productsList.forEach(element => {
       /**
-       * *si l'élément correspond au data-productid de la cible bouton
+       * *si l'id de l'élément correspond au data-productid de la cible bouton
        */
       if (element.id == event.target.dataset.productid) {
         var productsElements, totalAmount;
