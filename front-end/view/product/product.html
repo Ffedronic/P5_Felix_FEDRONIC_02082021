@@ -1,73 +1,81 @@
 <!doctype html>
 <html lang="fr">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="keywords" content="Retrouvez toute la mode des ours en peluche faits main sur Orinoco.">
-    <meta name="description" content="Orinoco, vente d'ours en peluche faits main, fabrication d'ours en peluche">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous"> 
-    <!--Personal CSS-->
-    <link rel="stylesheet" href="/front-end/css/style.css">
-    <!--favicon-->
-    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
-    <!--FontAwesome-->
-    <script src="https://kit.fontawesome.com/26697731b2.js" crossorigin="anonymous"></script>
-    <!--Police-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
-    <!--Title-->
-    <title>Votre Page Produit - Orinoco, achetez vos ours en peluche faits main chez nous.</title>
-  </head>
-  <body>
-    
-    <!-- Nav Bar Heading -->
-    <header>
-      <nav class="navbar navbar-expand-md navbar-light bg-secondary">
-        <div class="container">
-          <span class="navbar-brand me-5 fs-1 fw-bold text-light"><img src="/images/logo.png" alt="logo orinoco" height="50" width="60" class="d-inline-block align-text-bottom me-2 me-lg-4">Ours Orinoco</span>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ol class="navbar-nav nav-tabs">
-              <li class="nav-item">
-                <a class="nav-link active fw-bold fs-5 text-black" href="#">Fiche Produit : <span id="productName"></span></a>
-              </li>
-            </ol>
-          </div>
-        </div>
-      </nav>
-    </header>
 
-    <!--Page Content-->
-    <div class="container">
-      <main class="my-3">   
-        <div class="text-center text-lg-start mb-2">
-          <a href="/front-end/view/home/index.html" class="btn btn-warning fw-bold" aria-label="retour à la page d'accueil">
-            <i class="fas fa-arrow-left fa-1x me-1"></i>
-            Accueil
-          </a>
-        </div>
-        <section id="hero" class="text-center">
-          <h1 class="text-center fw-bold mb-4">Peluche by Orinoco</h1>
-        </section>
-        <div id="product_card" class="d-flex justify-content-center">
-        </div>
-      </main>
-    </div>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="keywords" content="Retrouvez toute la mode des ours en peluche faits main sur Orinoco.">
+  <meta name="description" content="Orinoco, vente d'ours en peluche faits main, fabrication d'ours en peluche">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+  <!--Personal CSS-->
+  <link rel="stylesheet" href="/front-end/css/style.css">
+  <!--favicon-->
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+  <!--FontAwesome-->
+  <script src="https://kit.fontawesome.com/26697731b2.js" crossorigin="anonymous"></script>
+  <!--Police-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+  <!--Title-->
+  <title>Votre Page Produit - Orinoco, achetez vos ours en peluche faits main chez nous.</title>
+</head>
 
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+<body>
+  <!-- Nav Bar Heading -->
+  <header>
+    <nav class="navbar navbar-expand-md navbar-light bg-secondary">
+      <div class="container">
+        <span class="navbar-brand me-5 fs-1 fw-bold text-light"><img src="/images/logo.png" alt="logo orinoco"
+            height="50" width="60" class="d-inline-block align-text-bottom me-2 me-lg-4">Ours Orinoco</span>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ol class="navbar-nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active fw-bold fs-5 text-black" href="#">Fiche Produit : <span
+                  id="productName"></span></a>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </nav>
+  </header>
 
-    <!--FontAwesome-->
-    <script src="https://kit.fontawesome.com/26697731b2.js" crossorigin="anonymous"></script>
-    
-    <!--Script-->
-    <script src="/front-end/view/product/product.js"></script>
-    
-  </body>
+  <!--Page Content-->
+  <div class="container">
+    <main class="my-3">
+      <div class="text-center text-lg-start mb-2">
+        <a href="/front-end/view/home/index.html" class="btn btn-warning fw-bold"
+          aria-label="retour à la page d'accueil">
+          <i class="fas fa-arrow-left fa-1x me-1"></i>
+          Accueil
+        </a>
+      </div>
+      <section id="hero" class="text-center">
+        <h1 class="text-center fw-bold mb-4">Peluche by Orinoco</h1>
+      </section>
+      <div id="product_card" class="d-flex justify-content-center">
+      </div>
+    </main>
+  </div>
+
+  <!-- Option 1: Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous">
+  </script>
+
+  <!--FontAwesome-->
+  <script src="https://kit.fontawesome.com/26697731b2.js" crossorigin="anonymous"></script>
+
+  <!--Script-->
+  <script src="/front-end/view/product/product.js"></script>
+
+</body>
+
 </html>

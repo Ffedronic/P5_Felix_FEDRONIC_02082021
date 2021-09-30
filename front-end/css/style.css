@@ -1,8 +1,6 @@
 body {
   font-family: "Playfair Display", serif;
-}
-body .container {
-  max-width: 1200px;
+  max-width: 1500px;
 }
 
 #articles-group article {
@@ -11,7 +9,7 @@ body .container {
 }
 @media all and (min-width: 1025px) {
   #articles-group article {
-    width: 22em;
+    width: 20em;
   }
 }
 

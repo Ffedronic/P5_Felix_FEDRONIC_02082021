@@ -36,154 +36,10 @@ const regexCityName = /^[ÀÁÂÃÄÅÇÑñÇçÈÉÊËÌÍÎÏÒÓÔÕÖØÙÚ�
 const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const regexAddress = /^[\w\d\s]{3,80}$/;
 
+
+
+
 //--------------------affichage des produits dans la page panier-----------------------------------//
-
-
-/*fonction d'affichage du formulaire de contact (paramètre : emplacement de l'affichage du formulaire*/
-function DisplayForm(displayFormLocation) {
-
-  /*affichage du formulaire de contact*/
-  displayFormLocation.innerHTML =
-    `
-      <form class="border rounded bg-light p-2">
-        <h2 class="mb-3 text-center">Formulaire de commande</h2>
-        <div class="form-group mb-3 text-center">
-          <label class="h3" for="email">Email :</label>
-          <input type="email" class="form-control" id="email" placeholder="nom@exemple.fr" required>
-        </div>
-        <div class="form-group mb-3 text-center">
-          <label for="firstName" class="h3">Prénom :</label>
-          <input type="text" class="form-control" id="firstName" aria-label="Entrez votre prénom" required>
-        </div>
-        <div class="form-group mb-3 text-center">
-          <label for="lastName" class="h3">Nom :</label>
-          <input type="text" class="form-control" id="lastName" required>
-        </div>
-        <div class="form-group mb-3 text-center text-center">
-          <label class="h3" for="adress">Adresse :</label>
-          <input type="text" class="form-control" id="adress" placeholder="ex : 78 chemin des oursons" required>
-        </div>
-        <div class="form-group mb-3 text-center">
-          <label class="h3" for="city">Ville</label>
-          <input type="text" class="form-control" id="city" required>
-        </div>
-        <button type="submit" id="btnSubmit" class="btn btn-info mt-3"><span class="h4 fw-bold">Valider la commande</span></button>
-      </form>
-    `;
-  //récupération du bouton de validation de commande
-  const btnSubmit = document.getElementById("btnSubmit");
-};
-
-/**
- * *fonction d'envoi de l'objet contenant les valeurs du formulaire de contact, les id des produits du panier, le montant total de la commande
- * * (paramètres : liste des produits, objet json avec les valeurs du formulaire et les id produits, le montant total de la commande)
- * */
-function SendContactProductsId(urlToSend, FormContactProductsId, OrderTotalPrice, urlConfirmationPage) {
-  //envoi de l'objet contactProductsToSend au serveur via fetch api avec la méthode POST
-  fetch(urlToSend, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json"
-      },
-      body: JSON.stringify(FormContactProductsId),
-    })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-    })
-    .then((responseServer) => {
-      //création et stockage dans le localStorage de l'objet responseServerContact contenant l'objet contact renvoyé par le serveur
-      const responseServerContact = responseServer.contact;
-      localStorage.setItem("responseServerContact", JSON.stringify(responseServerContact));
-      //création et stockage dans le localStorage de l'objet responseServerProducts contenant l'objet products renvoyé par le serveur
-      const responseServerProducts = responseServer.products;
-      localStorage.setItem("responseServerProducts", JSON.stringify(responseServerProducts));
-      //création et stockage dans le localStorage de l'objet responseServerOrderId contenant l'objet orderId renvoyé par le serveur
-      const responseServerOrderId = responseServer.orderId;
-      localStorage.setItem("responseServerOrderId", JSON.stringify(responseServerOrderId));
-      //stockage dans le localStorage de l'objet productsTotalPrice contenant le montant total de la commande
-      localStorage.setItem("productsTotalPrice", JSON.stringify(OrderTotalPrice));
-      window.location.assign(urlConfirmationPage) ;
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-};
-
-/**
- * *Fonction de test des valeurs des contrôles de formulaire
- */
-function ControlValues(regex, value) {
-  if (regex.test(value)) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
-/*fonction de récupération des valeurs du formulaire de contact et les id des produits du panier (paramètre : liste des produits)*/
-function CollectContactProductsId(productsList) {
-
-  //au clic sur le bouton de validation de commande
-  btnSubmit.addEventListener('click', event => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    //récupération des valeurs des controles du formulaire
-    var firstName = document.getElementById("firstName").value;
-    var lastName = document.getElementById("lastName").value;
-    var adress = document.getElementById("adress").value;
-    var city = document.getElementById("city").value;
-    var email = document.getElementById("email").value;
-
-    if(!ControlValues(regexEmail, email)) {
-      alert("L'e-mail : adresse mail non valide.") ;
-    }
-    else if(!ControlValues(regexCityName, firstName)) {
-     alert("Le prénom : au moins 3 lettres et pas de caractères spéciaux.") ;
-    }
-    else if(!ControlValues(regexCityName, lastName)) {
-     alert("Le nom : au moins 3 lettres et pas de caractères spéciaux.") ;
-    }
-    else if(!ControlValues(regexAddress, adress)) {
-     alert("Adresse : adresse de livraison non valide.") ;
-    }
-    else if(!ControlValues(regexCityName, city)){
-      alert("Ville : au moins 3 lettres et pas de caractères spéciaux.")
-    } 
-    else {
-    console.log("ok");
-      //création de l'objet contact contenant les valeurs des contrôles du formulaire
-      const contact = {
-        firstName: firstName,
-        lastName: lastName,
-        address: adress,
-        city: city,
-        email: email
-      };
-
-      //création du tableau products contenant les id des produits contenus dans le localStorage
-      const products = [];
-      productsList.forEach(element => {
-        products.push(element.id);
-      });
-
-      //création de l'objet à envoyer au serveur contenant la liste des produits achetés et les valeurs validées des champs formulaire de contact
-      const contactProductsToSend = {
-        contact,
-        products
-      };
-
-      var orderAmount = document.getElementById("totalAmount").innerHTML;
-      /**
-       * ! Appel de la fonction d'affichage d'envoi du formulaire, le total commande, vers le serveur et la réponse du serveur vers la page de confirmation 
-       * ! (paramètres : url d'envoi post, objet json avec les valeurs du formulaire et les id produits, le montant total de la commande, page de confirmation)
-       */
-      SendContactProductsId(urlSendOrder, contactProductsToSend, orderAmount, urlConfirmationPage);
-    }
-  });
-};
 
 /* fonction d'affichage des produits présents dans le localStorage (paramètres : liste des produits, emplacemement d'affichage de la liste, emplacemement d'affichage de la quantité, emplacemement d'affichage du montant total de la commande)*/
 function DisplayProductsLocalStorage(productsList, productsListDisplayLocation, productsListDisplayLength, productsListDisplayTotalAmount) {
@@ -271,13 +127,210 @@ function DisplayProductsLocalStorage(productsList, productsListDisplayLocation, 
 DisplayProductsLocalStorage(listOfProductStorage, displayProductsInCart, displayProductsLengthInCart, displayProductsTotalAmountInCart);
 
 
+/*fonction d'affichage du formulaire de contact (paramètre : emplacement de l'affichage du formulaire)*/
+function DisplayForm(displayFormLocation) {
+
+  /*affichage du formulaire de contact*/
+  displayFormLocation.innerHTML =
+    `
+      <form class="border rounded bg-light p-2">
+        <h2 class="mb-3 text-center">Formulaire de commande</h2>
+        <div class="form-group mb-3 text-center">
+          <label class="h3" for="email">Email :</label>
+          <input type="email" class="form-control" id="email" placeholder="nom@exemple.fr" required>
+        </div>
+        <div class="form-group mb-3 text-center">
+          <label for="firstName" class="h3">Prénom :</label>
+          <input type="text" class="form-control" id="firstName" aria-label="Entrez votre prénom" required>
+        </div>
+        <div class="form-group mb-3 text-center">
+          <label for="lastName" class="h3">Nom :</label>
+          <input type="text" class="form-control" id="lastName" required>
+        </div>
+        <div class="form-group mb-3 text-center text-center">
+          <label class="h3" for="adress">Adresse :</label>
+          <input type="text" class="form-control" id="adress" placeholder="ex : 78 chemin des oursons" required>
+        </div>
+        <div class="form-group mb-3 text-center">
+          <label class="h3" for="city">Ville</label>
+          <input type="text" class="form-control" id="city" required>
+        </div>
+        <button type="submit" id="btnSubmit" class="btn btn-info mt-3"><span class="h4 fw-bold">Valider la commande</span></button>
+      </form>
+    `;
+  //récupération du bouton de validation de commande
+  const btnSubmit = document.getElementById("btnSubmit");
+};
+
+
+/**
+ * *Fonction de test des valeurs des contrôles de formulaire
+ */
+function ControlValues(regex, value) {
+  if (regex.test(value)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+/*fonction de récupération des valeurs du formulaire de contact et les id des produits du panier (paramètre : liste des produits)*/
+function CollectContactProductsId(productsList) {
+
+  //au clic sur le bouton de validation de commande
+  btnSubmit.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    //récupération des valeurs des controles du formulaire
+    var firstName = document.getElementById("firstName").value;
+    var lastName = document.getElementById("lastName").value;
+    var adress = document.getElementById("adress").value;
+    var city = document.getElementById("city").value;
+    var email = document.getElementById("email").value;
+
+    if(!ControlValues(regexEmail, email)) {
+      alert("L'e-mail : adresse mail non valide.") ;
+    }
+    else if(!ControlValues(regexCityName, firstName)) {
+     alert("Le prénom : au moins 3 lettres et pas de caractères spéciaux.") ;
+    }
+    else if(!ControlValues(regexCityName, lastName)) {
+     alert("Le nom : au moins 3 lettres et pas de caractères spéciaux.") ;
+    }
+    else if(!ControlValues(regexAddress, adress)) {
+     alert("Adresse : adresse de livraison non valide.") ;
+    }
+    else if(!ControlValues(regexCityName, city)){
+      alert("Ville : au moins 3 lettres et pas de caractères spéciaux.")
+    } 
+    else {
+    console.log("ok");
+      //création de l'objet contact contenant les valeurs des contrôles du formulaire
+      const contact = {
+        firstName: firstName,
+        lastName: lastName,
+        address: adress,
+        city: city,
+        email: email
+      };
+
+      //création du tableau products contenant les id des produits contenus dans le localStorage
+      const products = [];
+      productsList.forEach(element => {
+        products.push(element.id);
+      });
+
+      //création de l'objet à envoyer au serveur contenant la liste des produits achetés et les valeurs validées des champs formulaire de contact
+      const contactProductsToSend = {
+        contact,
+        products
+      };
+
+      var orderAmount = document.getElementById("totalAmount").innerHTML;
+      /**
+       * ! Appel de la fonction d'affichage d'envoi du formulaire, le total commande, vers le serveur et la réponse du serveur vers la page de confirmation 
+       * ! (paramètres : url d'envoi post, objet json avec les valeurs du formulaire et les id produits, le montant total de la commande, page de confirmation)
+       */
+      SendContactProductsId(urlSendOrder, contactProductsToSend, orderAmount, urlConfirmationPage);
+    }
+  });
+};
+
+/**
+ * *fonction d'envoi de l'objet contenant les valeurs du formulaire de contact, les id des produits du panier, le montant total de la commande
+ * * (paramètres : liste des produits, objet json avec les valeurs du formulaire et les id produits, le montant total de la commande)
+ * */
+ function SendContactProductsId(urlToSend, FormContactProductsId, OrderTotalPrice, urlConfirmationPage) {
+  //envoi de l'objet contactProductsToSend au serveur via fetch api avec la méthode POST
+  fetch(urlToSend, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify(FormContactProductsId),
+    })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+    })
+    .then((responseServer) => {
+      //création et stockage dans le localStorage de l'objet responseServerContact contenant l'objet contact renvoyé par le serveur
+      const responseServerContact = responseServer.contact;
+      localStorage.setItem("responseServerContact", JSON.stringify(responseServerContact));
+      //création et stockage dans le localStorage de l'objet responseServerProducts contenant l'objet products renvoyé par le serveur
+      const responseServerProducts = responseServer.products;
+      localStorage.setItem("responseServerProducts", JSON.stringify(responseServerProducts));
+      //création et stockage dans le localStorage de l'objet responseServerOrderId contenant l'objet orderId renvoyé par le serveur
+      const responseServerOrderId = responseServer.orderId;
+      localStorage.setItem("responseServerOrderId", JSON.stringify(responseServerOrderId));
+      //stockage dans le localStorage de l'objet productsTotalPrice contenant le montant total de la commande
+      localStorage.setItem("productsTotalPrice", JSON.stringify(OrderTotalPrice));
+      window.location.assign(urlConfirmationPage) ;
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+};
+
 
 //----------------------------modification de la quantité par article----------------------------------------//
+
+
+/**
+ * *Récupération de la liste des boutons "-" la quantité du produit
+ */
+const btnDecreaseProductQuantity = document.querySelectorAll(".btn-warning");
+
+/**
+ * *fonction de diminution de la quantité du produit (paramètres : liste des boutons "-" la quantité des produits, liste des produits du panier)
+ */
+function DecreaseProductQuantity(productsButtonDecreaseQuantity) {
+  productsButtonDecreaseQuantity.forEach(btnDeleteQelement => {
+    btnDeleteQelement.addEventListener('click', event => {
+      handleButtonClick(event)
+    });
+  });
+};
+
+/**
+ * *Récupération de la liste des boutons "+" la quantité du produit
+ */
+const btnIncreaseProductQuantity = document.querySelectorAll(".btn-success");
+
+/**
+ * *fonction d'augmentation de la quantité du produit (paramètres : liste des boutons "+" la quantité des produits, liste des produits du panier)
+ */
+function IncreaseProductQuantity(productsButtonIncreaseQuantity) {
+  productsButtonIncreaseQuantity.forEach(btnAddElement => {
+    btnAddElement.addEventListener('click', event => {
+      handleButtonClick(event)
+    });
+  });
+}
+
+/**
+ * *Récupération de la liste des boutons "supprimer" du produit
+ */
+const btnDeleteProduct = document.querySelectorAll(".btn-danger");
+
+/**
+ * *fonction de suppression du produit (paramètres : liste des boutons "supprimer"  des produits, liste des produits du panier)
+ */
+function DeleteProduct(productsButtonDelete) {
+  productsButtonDelete.forEach(btnDeleteElement => {
+    //au click
+    btnDeleteElement.addEventListener('click', event => {
+      handleButtonClick(event);
+    });
+  });
+};
 
 /**
  * * Fonction de modification des quantités selon les attributs data des boutons de modification de quantité
  */
-function handleButtonClick(event) {
+ function handleButtonClick(event) {
 
   productsList = JSON.parse(localStorage.getItem("produit")) ;
   /**
@@ -395,55 +448,6 @@ function handleButtonClick(event) {
       };
     });
   }
-};
-
-/**
- * *Récupération de la liste des boutons "-" la quantité du produit
- */
-const btnDecreaseProductQuantity = document.querySelectorAll(".btn-warning");
-
-/**
- * *fonction de diminution de la quantité du produit (paramètres : liste des boutons "-" la quantité des produits, liste des produits du panier)
- */
-function DecreaseProductQuantity(productsButtonDecreaseQuantity) {
-  productsButtonDecreaseQuantity.forEach(btnDeleteQelement => {
-    btnDeleteQelement.addEventListener('click', event => {
-      handleButtonClick(event)
-    });
-  });
-};
-
-/**
- * *Récupération de la liste des boutons "+" la quantité du produit
- */
-const btnIncreaseProductQuantity = document.querySelectorAll(".btn-success");
-
-/**
- * *fonction d'augmentation de la quantité du produit (paramètres : liste des boutons "+" la quantité des produits, liste des produits du panier)
- */
-function IncreaseProductQuantity(productsButtonIncreaseQuantity) {
-  productsButtonIncreaseQuantity.forEach(btnAddElement => {
-    btnAddElement.addEventListener('click', event => {
-      handleButtonClick(event)
-    });
-  });
-}
-
-/**
- * *Récupération de la liste des boutons "supprimer" du produit
- */
-const btnDeleteProduct = document.querySelectorAll(".btn-danger");
-
-/**
- * *fonction de suppression du produit (paramètres : liste des boutons "supprimer"  des produits, liste des produits du panier)
- */
-function DeleteProduct(productsButtonDelete) {
-  productsButtonDelete.forEach(btnDeleteElement => {
-    //au click
-    btnDeleteElement.addEventListener('click', event => {
-      handleButtonClick(event);
-    });
-  });
 };
 
 /**

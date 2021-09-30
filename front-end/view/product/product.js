@@ -24,44 +24,22 @@ const url = "http://localhost:3000/api/teddies/";
 /*récupération de l'emplacement des fiches produits */
 const productCard = document.getElementById('product_card');
 
-/*fonction d'ajout des options de personnalisation*/
-function AddSelectOption (elementColors, select) {
-  for (let color of elementColors) {
-    let options = document.createElement('option');
-    options.text = color;
-    options.value = color;
-    select.appendChild(options);
-  };
-} ;
-
-/*fonction d'ajout au localStorage*/
-function AddToLocalStorage (keyArticles, articles) {
-  localStorage.setItem(keyArticles, JSON.stringify(articles));
-  console.log(articles);
-} ;
-
-/*fonction d'ajout des produits dans le panier*/
-function AddProductsToCart (articles, article) {
-  /**s'il y a des produits dans la variable products**/
-  if (articles != null) {
-    var found = false;
-    articles.forEach(element => {
-      if (element.id == article.id) {
-        element.quantity = element.quantity + 1;
-        found = true;
+/*function de récupération des informations du produit via l'id*/
+function DownloadProductById(url, id) {
+  fetch(`${url}${id}`)
+    .then(function (res) {
+      if (res.ok) {
+        return res.json();
       }
+    })
+    .then(DisplayDownloadedProduct)
+    .catch((err) => {
+      console.log(err);
     });
-    if(!found) {
-      articles.push(article);
-    }
-    AddToLocalStorage("produit", articles) ;
-    /**s'il n'y a pas de produits dans la variable products**/
-  } else {
-    articles = [];
-    articles.push(article);
-    AddToLocalStorage("produit", articles) ;
-  };
 };
+
+/*chargement des données du produit et affichage du produit à l'aide de son id*/
+DownloadProductById(url, id);
 
 /*fonction d'affichage de la fiche produit*/
 function DisplayDownloadedProduct(productElements) {
@@ -136,21 +114,44 @@ function DisplayDownloadedProduct(productElements) {
   });
 };
 
-//function de récupération des informations du produit via l'id
-function DownloadProductById(url, id) {
-  fetch(`${url}${id}`)
-    .then(function (res) {
-      if (res.ok) {
-        return res.json();
+/*fonction d'ajout des options de personnalisation*/
+function AddSelectOption (elementColors, select) {
+  for (let color of elementColors) {
+    let options = document.createElement('option');
+    options.text = color;
+    options.value = color;
+    select.appendChild(options);
+  };
+} ;
+
+/*fonction d'ajout des produits dans le panier*/
+function AddProductsToCart (articles, article) {
+  /**s'il y a des produits dans la variable products**/
+  if (articles != null) {
+    var found = false;
+    articles.forEach(element => {
+      if (element.id == article.id) {
+        element.quantity = element.quantity + 1;
+        found = true;
       }
-    })
-    .then(DisplayDownloadedProduct)
-    .catch((err) => {
-      console.log(err);
     });
+    if(!found) {
+      articles.push(article);
+    }
+    AddToLocalStorage("produit", articles) ;
+    /**s'il n'y a pas de produits dans la variable products**/
+  } else {
+    articles = [];
+    articles.push(article);
+    AddToLocalStorage("produit", articles) ;
+  };
 };
 
-//chargement des données du produit et affichage du produit à l'aide de son id
-DownloadProductById(url, id);
+/*fonction d'ajout au localStorage*/
+function AddToLocalStorage (keyArticles, articles) {
+  localStorage.setItem(keyArticles, JSON.stringify(articles));
+  console.log(articles);
+} ;
+
 
 //--------------------------------------Fin affichage de la fiche produit----------------------------------------------------------//
