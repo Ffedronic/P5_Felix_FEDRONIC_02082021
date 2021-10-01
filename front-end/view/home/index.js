@@ -1,3 +1,20 @@
+//création de la variable url contenant la route 
+var url = "http://localhost:3000/api/teddies/";
+
+//fonction de récupération des produits via fetch api
+function DownloadProducts(url) {
+  fetch(url)
+    .then(function (res) {
+      if (res.ok) {
+        return res.json();
+      }
+    })
+    .then(DisplayDownloadProducts)
+    .catch(function (err) {
+      console.log(err);
+    });
+};
+
 //affichage des produits sur la page d'accueil à partir de la promesse issue du fetch
 function DisplayDownloadProducts(listDownloadedProducts) {
   document.getElementById('article-length').innerHTML += `<h2>(${listDownloadedProducts.length} articles)</h2>`;
@@ -17,23 +34,6 @@ function DisplayDownloadProducts(listDownloadedProducts) {
       `
   };
 };
-
-//fonction de récupération des produits via fetch api
-function DownloadProducts(url) {
-  fetch(url)
-    .then(function (res) {
-      if (res.ok) {
-        return res.json();
-      }
-    })
-    .then(DisplayDownloadProducts)
-    .catch(function (err) {
-      console.log(err);
-    });
-};
-
-//création de la variable url contenant la route 
-var url = "http://localhost:3000/api/teddies/";
 
 //appel de la fonction pour télécharger et afficher les produits disponibles dans la base de données
 DownloadProducts(url);

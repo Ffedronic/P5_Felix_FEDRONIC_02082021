@@ -120,13 +120,6 @@ function DisplayProductsLocalStorage(productsList, productsListDisplayLocation, 
   };
 };
 
-/**
- * ! Appel de la fonction d'affichage des produits présents dans le localStorage 
- * ! (paramètres : liste des produits LocalStorage, emplacemement d'affichage de la liste, emplacemement d'affichage de la quantité, emplacemement d'affichage du montant total de la commande)
- */
-DisplayProductsLocalStorage(listOfProductStorage, displayProductsInCart, displayProductsLengthInCart, displayProductsTotalAmountInCart);
-
-
 /*fonction d'affichage du formulaire de contact (paramètre : emplacement de l'affichage du formulaire)*/
 function DisplayForm(displayFormLocation) {
 
@@ -161,7 +154,6 @@ function DisplayForm(displayFormLocation) {
   //récupération du bouton de validation de commande
   const btnSubmit = document.getElementById("btnSubmit");
 };
-
 
 /**
  * *Fonction de test des valeurs des contrôles de formulaire
@@ -274,6 +266,11 @@ function CollectContactProductsId(productsList) {
     })
 };
 
+/**
+ * ! Appel de la fonction d'affichage des produits présents dans le localStorage 
+ * ! (paramètres : liste des produits LocalStorage, emplacemement d'affichage de la liste, emplacemement d'affichage de la quantité, emplacemement d'affichage du montant total de la commande)
+ */
+ DisplayProductsLocalStorage(listOfProductStorage, displayProductsInCart, displayProductsLengthInCart, displayProductsTotalAmountInCart);
 
 //----------------------------modification de la quantité par article----------------------------------------//
 
@@ -308,7 +305,7 @@ function IncreaseProductQuantity(productsButtonIncreaseQuantity) {
       handleButtonClick(event)
     });
   });
-}
+};
 
 /**
  * *Récupération de la liste des boutons "supprimer" du produit
